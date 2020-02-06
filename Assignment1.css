@@ -86,8 +86,11 @@
         background: #CFCDC5;
         border-bottom: 8px solid #931F06;
 }
-    #p1{
+    #p1 {
     text-align: center
+}
+#p2 {
+    text-align: center;
 }
 
     #firstLink {
