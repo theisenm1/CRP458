@@ -78,11 +78,31 @@
         text-align: center;
 }
         body {
-  font-family: Arial, Helvetica, sans-serif;
-     width: 90%;
+        font-family: Arial, Helvetica, sans-serif;
+        width: 90%;
         margin: 0 auto;
         font: 100% Arial, Helvetica, sans-serif;
         padding: 1em 20px;
         background: #CFCDC5;
         border-bottom: 8px solid #931F06;
+}
+    #p1{
+    text-align: center
+}
+
+    #firstLink {
+        color: darkgreen;
+}
+
+    #firstLink:hover {
+        color: firebrick;
+        
+}
+
+    #GISF {
+        color: darkblue;
+}
+
+    #GISF:hover {
+        color: crimson;
 }
