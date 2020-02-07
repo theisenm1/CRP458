@@ -68,6 +68,7 @@
     #h1 {
         font-family: Georgia, "Times New Roman",,sans-serif;
         font-size: 2em;
+        font-style: italic;
         font-weight: normal;
         margin: 0 0 .4em;
         padding: 5px 10px;
@@ -89,7 +90,7 @@
     #p1 {
     text-align: center
 }
-#p2 {
+    #p2 {
     text-align: center;
 }
 
@@ -109,3 +110,11 @@
     #GISF:hover {
         color: crimson;
 }
+
+    #feet {
+        border-top: 1px solid black;
+        text-align: center;
+        font-size: 1em;
+        line-height: 4em;
+        margin-top: 1em;
+}    
