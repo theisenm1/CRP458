@@ -88,10 +88,17 @@
         border-bottom: 8px solid #931F06;
 }
     #p1 {
-    text-align: center
+        text-align: center
 }
-    #centerimage {
-    text-align: center;
+    img.displayed {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+}
+    #centerIFrame {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
 }
 
     #firstLink {
