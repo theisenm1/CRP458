@@ -25,19 +25,19 @@
   </div> 
 </div>
     
-<h1 id="h1"><strong>Experimental JavaScript</strong></h1>
+<h1 id="h1"><strong>JavaScript Survey</strong></h1>
   
   <h3>What is your favorite food/drink?</h3>
 
    <form>
-  Favorite Food:
-  <input type="text" id="favoriteFood" value="Biscuits and Gravy"><br>
-  Favorite Drink:
-  <input type="text" id="favoriteDrink" value="Juice"
-         onchange="changeFunction(this.value)"><br></br>   
-      </form>
+    Favorite Food:
+    <input type="text" id="favoriteFood" value="Biscuits and Gravy"><br>
+    Favorite Drink:
+    <input type="text" id="favoriteDrink" value="Juice"
+         onchange="changeFunction(this.value)">  
+      </form><br></br> 
     
-    <br><em><strong>Click to update display</strong></em></br>
+   <em><strong>Click to update display</strong></em>
     
     <button type="botton" onClick="displayFunction()">Display</button>
   
@@ -71,7 +71,6 @@
 
     <div id="ageButton">
         <button onclick="ageFunction()">How old are you?</button>
-
         <p id="cheese"></p>
     </div>
 
@@ -79,7 +78,13 @@
 
 <p id="software"></p>
 
-<p>These are just a few examples.</p>
+<p id="software">OR</p>
+
+<p id="software2"></p>
+
+<h4>More on me</h4>
+
+<p id="me"></p>
 
 </body>
 
@@ -112,7 +117,7 @@
       secondP.innerHTML = ('Population is: ' + theSelect[theSelect.selectedIndex].value);
       
     }
-      
+      //IF Else
     function ageFunction() {
         var message;
         var age = prompt("What is your age")
@@ -125,7 +130,7 @@
   
   document.getElementById("cheese").innerHTML = message;
 }
-        
+        //Array
       var gisSoftware = [
         "Arc Pro",
         " Arc Online",
@@ -134,36 +139,27 @@
 ];
 document.getElementById("software").innerHTML = gisSoftware;
       
+      //LOOP
+      var software = ["GRASS GIS", "FalconView", "MapWindow", "SAGA GIS"];
+        var i, len, text;
+        for (i = 0, len = software.length, text = ""; i < len; i++) {
+            text += software[i] + "<br>";
+}
+document.getElementById("software2").innerHTML = text;
+      
+      
+      var person = {
+        firstName: "Matt",
+        lastName: "Theisen",
+        major: "Animal Ecology",
+        institution: "Iowa State University",
+        academicYear: "fifth year",
+        homeTown: "Maple Grove, MN"
+    };
+
+      //Object
+        document.getElementById("me").innerHTML =
+            person.firstName + " is studying " + person.major + " at " + person.institution + ". " + "He is from " + person.homeTown + " and is in his " + person.academicYear + ".";
+      
   </script>
-</html>
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en-US">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>An empty page</title>
-    <script src="script.js" defer></script>
-</head>
-
-<body id="names">
-    
-    <script>
- var names = newArray("Steve", "Leah", "Jeff", "Ben", "Jeanne");
-document.getElementById("names").innerHTML = names; 
-</script>
-</body>
-
-
-
 </html>
