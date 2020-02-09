@@ -27,7 +27,7 @@
     
 <h1 id="h1"><strong>Experimental JavaScript</strong></h1>
   
-  <strong>What is your favorite food/drink?<strong>
+  <h3>What is your favorite food/drink?</h3>
 
    <form>
   Favorite Food:
@@ -43,13 +43,32 @@
   
   <br><div id="display"></div></br>
   
-    <div> Click Date to display current day, date, and time </div>
+    <h4><em> Click Date to display current day, date, and time </em></h4>
   
   <button type="button" onClick="myFunction()">Date</button>
 
 <p id="demo"></p>
   
-    <p id="names"></p>    
+    <p id="names"></p>
+    
+  <h4>Where do you live?</h4>
+    <form name="demoForm">
+        <select name="demoSelect" onchange="showData()">
+            <option value="zilch">Select:</option>
+            <option value="~24.6 million">Australia</option>
+            <option value="~1.2 billion">Africa</option>
+            <option value="~741 million">Europe</option>
+            <option value="~579 million">North America</option>
+            <option value="~422 million">South America</option>
+        </select>
+    </form>
+
+    <p id="firstP">&nbsp;</p>
+    <p id="secondP">&nbsp;</p>
+    <p id="thirdP">&nbsp;</p>
+    <p id="fourthP">&nbsp;</p>
+    <p id="fifthP">&nbsp;</p>    
+    
 
 </body>
 
@@ -60,7 +79,7 @@
       document.getElementById('display').innerHTML = inputBox.value;
     }
     
-        function displayFunction() {
+    function displayFunction() {
       
       favoriteFood = document.getElementById("favoriteFood").value;
       favoriteDrink = document.getElementById("favoriteDrink").value;
@@ -68,8 +87,19 @@
       document.getElementById("display").innerHTML = favoriteFood +", "+ favoriteDrink;
     }
     
-        function myFunction() {
+    function myFunction() {
       document.getElementById("demo").innerHTML = Date();
+    }
+      
+        
+    function showData() {
+        var theSelect = demoForm.demoSelect;
+        var firstP = document.getElementById('firstP');
+        var secondP = document.getElementById('secondP');
+        var thirdP = document.getElementById('thirdP');
+        
+      secondP.innerHTML = ('Population is: ' + theSelect[theSelect.selectedIndex].value);
+      
     }
       
        var names = newArray("Steve", "Leah", "Jeff", "Ben", "Jeanne");
