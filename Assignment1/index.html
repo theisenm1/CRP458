@@ -67,8 +67,19 @@
     <p id="secondP">&nbsp;</p>
     <p id="thirdP">&nbsp;</p>
     <p id="fourthP">&nbsp;</p>
-    <p id="fifthP">&nbsp;</p>    
-    
+    <p id="fifthP">&nbsp;</p>
+
+    <div id="ageButton">
+        <button onclick="ageFunction()">How old are you?</button>
+
+        <p id="cheese"></p>
+    </div>
+
+<h4>GIS Software</h4>
+
+<p id="software"></p>
+
+<p>These are just a few examples.</p>
 
 </body>
 
@@ -102,9 +113,26 @@
       
     }
       
-       var names = newArray("Steve", "Leah", "Jeff", "Ben", "Jeanne");
-        document.getElementById("names").innerHTML = names; 
+    function ageFunction() {
+        var message;
+        var age = prompt("What is your age")
+        if (age < 18) {      
+    message = "You are Not an adult.";
+            
+    }   else if (age >= 18) {
+    message = "You are an adult.";
+  }
+  
+  document.getElementById("cheese").innerHTML = message;
+}
         
+      var gisSoftware = [
+        "Arc Pro",
+        " Arc Online",
+        " ArcMap Desktop",
+        " QGIS"
+];
+document.getElementById("software").innerHTML = gisSoftware;
       
   </script>
 </html>
