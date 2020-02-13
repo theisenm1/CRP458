@@ -4,20 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>exercise5 Leaflet Map</title>
-     <link href="../Assignment1.css" rel="stylesheet" type="text/css">
+    
+    <link href="../Assignment1.css" rel="stylesheet" type="text/css">
      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="crossorigin=""/>
      <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
    crossorigin=""></script>
+    
     <style>
      #map {
-     width: 500px;
-     height: 400px;
-     
+     width: 700px;
+     height: 500px;
  }
     </style>
+    
 </head>
+    
     <body>
         
         <div class="navbar">
@@ -41,14 +44,20 @@
          <h1 id="h1"><strong>New Leaflet Map</strong></h1>
 <div id="map"></div>
         
-        <script>
-        var map = L.map('map').setView([43.0, -92.634], 6);
+        <br><button id="">Wright County STRIPS Farm</button></br>
         
-       L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        <button id="">Grundy County STRIPS Farm</button><br>
+        
+        <button id="">Tama County STRIPS Farm</button>
+        
+        <script>
+        var map = L.map('map').setView([43.0, -92.634], 13);
+        
+L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     id: 'mapbox/streets-v11',
-    accessToken: 'pk.eyJ1IjoidGhlaXNlbm0iLCJhIjoiY2s2andxbnphMDBwYTNlcGEybHQydGpkbiJ9.iAShHQc6s7kvP5T8etUYbQ'
+    accessToken: 'pk.eyJ1IjoidGhlaXNlbm0iLCJhIjoiY2s2azE4ZG96MDIxMzNudXJ5ejVnaDJiOSJ9.W8tROW7Hu0BZGBaXacUhtg'
 }).addTo(mymap);
             
         L.marker([42.0308, -93.6319]).addTo(map)
