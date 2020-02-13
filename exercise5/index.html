@@ -42,29 +42,72 @@
     </div> 
         
          <h1 id="h1"><strong>New Leaflet Map</strong></h1>
+        
 <div id="map"></div>
         
-        <br><button id="">Wright County STRIPS Farm</button></br>
+        <br><button id="wrightBtn">Wright County STRIPS Farm</button></br>
         
-        <button id="">Grundy County STRIPS Farm</button><br>
+        <button id="grundyBtn">Grundy County STRIPS Farm</button><br>
         
-        <button id="">Tama County STRIPS Farm</button>
+        <button id="tamaBtn">Tama County STRIPS Farm</button>
         
         <script>
-        var map = L.map('map').setView([43.0, -92.634], 13);
+            
+        var map = L.map('map').setView([42.0308, -93.6319], 7);
         
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    accessToken: 'pk.eyJ1IjoidGhlaXNlbm0iLCJhIjoiY2s2azE4ZG96MDIxMzNudXJ5ejVnaDJiOSJ9.W8tROW7Hu0BZGBaXacUhtg'
-}).addTo(mymap);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            // This is a unique access token, you must register for your own from https://account.mapbox.com/access-tokens/
+            accessToken: 'pk.eyJ1IjoidGhlaXNlbm0iLCJhIjoiY2s2azJqenhvMDJnMzNzcXBuaXF0Y29xayJ9.8TLNb5gvHvrdXYAD64tTEQ' 
+        }).addTo(map);
             
         L.marker([42.0308, -93.6319]).addTo(map)
     .bindPopup("Ames, Iowa")
-    .openPopup();
+//.openPopup();
+   
+            
+            //Adding Multple Town Markers
+ 
+// Array
+        var towns = [
+            [42.0308, -93.6319, "Ames, Iowa"],
+            [42.4641, -92.6282, "Dike, Iowa"],
+            [42.1936, -92.4655, "Traer, Iowa"],
+            [41.7033, -93.0574 , "Newton, Iowa"]
+           ];
+            
+//loop through the array and add a marker for each
+        for (var i = 0; i < towns.length; i++) {
+            marker = new L.marker([towns[i][0], towns[i][1]])
+                .bindPopup(towns[i][2])
+                .addTo(map);
+        }
+               
+ //Links to map buttons           
+            
+        document.getElementById("wrightBtn").addEventListener("click", wrightCounty);
 
-        
+        //Wright County Iowa function
+        function wrightCounty() {
+            map.setView(new L.LatLng(42.6698, -93.8247), 14);
+        }
+            
+        document.getElementById("grundyBtn").addEventListener("click", grundyCounty);
+
+        //Grundy County Iowa function
+        function grundyCounty() {
+            map.setView(new L.LatLng(42.4742, -92.6625), 15);
+        }
+            
+        document.getElementById("tamaBtn").addEventListener("click", tamaCounty);
+
+        //Tama County Iowa function
+        function tamaCounty() {
+            map.setView(new L.LatLng(42.1829, -92.4920), 15);     
+        }
+            
         </script>
     
     </body>
