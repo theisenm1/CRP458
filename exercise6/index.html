@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Exercise 6 Leaflet Map</title>
+<meta name="description" content="LA 458/558 15a Leaflet with layer control - 2020" />
+      <link href="../Assignment1.css" rel="stylesheet" type="text/css">
+	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> 
+	  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+	  
+      <style>
+      html, body, 
+
+          #map { height: 480px; margin: 0; padding: 0; }  
+      </style>
+	  	
+  </head>
+    
+  <body>
+      
+    <div class="navbar">
+            <a href="https://theisenm1.github.io/CRP458/">Home</a>
+            <a href="#news">News</a>
+            <div class="dropdown">
+            <button class="dropbtn">Exercises and Assignments 
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+            <a href="https://theisenm1.github.io/CRP458/exercise1/">About Me</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise2/">Exercise 2</a>
+            <a href="https://github.com/theisenm1/CRP458/blob/master/exercise3/GeoJSON%20Ag%20Drainage%20Wells.geojson" target="_blank">Exercise 3</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise4/#11/42.7354/-93.6791">Exercise 4</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise5/">Exercise 5</a>
+            <a href="">Exercise 6</a>        
+            <a href="https://theisenm1.github.io/CRP458/Assignment1/">Assignment 1</a>   
+                 
+            </div>
+        </div> 
+    </div> 
+        
+         <h1 id="h1"><strong>Leaflet Overlays Map</strong></h1>
+      
+<div id="map"></div>
+      
+      <script>
+      
+      console.clear();
+
+//Base Layers
+var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18
+});
+
+//Feb 17, 2020 Note MapQuestOpen Arial is no longer availabel and has been replaced by esri imagery
+/*
+var MapQuestOpen_Aerial = L.tileLayer('https://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+	attribution: 'Tiles Courtesy of <a href="https://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+	subdomains: '1234'
+});
+*/
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+
+var Stamen_Watercolor = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	subdomains: 'abcd',
+	minZoom: 1,
+	maxZoom: 16,
+	ext: 'jpg'
+});
+
+//Not working yet
+var naip = L.tileLayer.wms("https://raster.nationalmap.gov/ArcGIS/services/Orthoimagery/USGS_EDC_Ortho_NAIP/ImageServer/WMSServer", {
+    		layers: '0',
+    		format: 'image/jpeg',
+    		transparent: true,
+    		//opacity: 0.5,
+    		attribution: "USGS National Map &copy; 2013"
+		});
+
+// Overlay layers
+
+
+
+var nexrad = new L.tileLayer.wms("https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+    		layers: 'nexrad-n0r-900913',
+    		format: 'image/png',
+    		transparent: true,
+    		attribution: "Weather data &copy; 2012 IEM Nexrad"
+		});
+
+
+var Stamen_TonerLines = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	subdomains: 'abcd',
+	minZoom: 0,
+	maxZoom: 20,
+	ext: 'png'
+});
+
+
+
+//------ Vector and Marker Layers stuff
+var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.'),
+    denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
+    aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
+    golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
+var ames = L.marker([42, -93]).bindPopup('This is Ames, IA.');
+
+var polygon = L.polygon([
+    [42, -93],
+    [42, -94],
+    [43, -94],
+	[43, -93]
+],{
+    color: 'yellow',
+    fillColor: 'yellow',
+    fillOpacity: 0.9
+});
+
+
+
+var pointA = new L.LatLng(40.13, -93.22);
+var pointB = new L.LatLng(44.23, -95.70);
+var pointC = new L.LatLng(46.1, -93.2);
+var pointD = new L.LatLng(44.2, -91.1);
+var pointList = [pointA, pointB, pointC, pointD];
+
+var myPolyline = new L.Polyline(pointList, {
+    color: 'red',
+    weight: 3,
+    opacity: 0.5,
+    smoothFactor: 1
+});
+
+
+
+
+
+var someStuff = L.layerGroup([littleton, denver, aurora, golden, ames, polygon]);
+
+
+//create the map
+var map = L.map('map', {
+    		center: new L.LatLng(42.0908, -93.6208),
+    		zoom: 4,
+    		layers: [OSM, nexrad, someStuff]
+		});
+
+
+
+
+		//layer control
+		var baseMaps = {
+			"OpenStreetMap": OSM,
+			//"MapQuestOpen Aerial": MapQuestOpen_Aerial,
+      "Esri World Imagery": Esri_WorldImagery,
+			"Stamen Watercolor": Stamen_Watercolor,
+			"Aerial Imagery - Not Working": naip,
+		};
+       		
+		var overlayMaps = {
+			"Stamen TonerLines": Stamen_TonerLines,
+			"Some Stuff": someStuff,
+			"Radar": nexrad,
+      "polyline": myPolyline
+			
+		};
+	
+		L.control.layers(baseMaps, overlayMaps).addTo(map);
+</script>
+      
+  </body>
+</html>
+    
