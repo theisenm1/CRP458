@@ -13,6 +13,7 @@
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+      
 }
 
 .dropdown {
@@ -34,6 +35,7 @@
 
 .navbar a:hover, .dropdown:hover .dropbtn {
   background-color: #931F06;
+    
 }
 
 .dropdown-content {
