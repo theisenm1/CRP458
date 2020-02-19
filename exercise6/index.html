@@ -68,14 +68,6 @@ var Stamen_Watercolor = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/w
 	ext: 'jpg'
 });
 
-//Not working yet
-var naip = L.tileLayer.wms("https://raster.nationalmap.gov/ArcGIS/services/Orthoimagery/USGS_EDC_Ortho_NAIP/ImageServer/WMSServer", {
-    		layers: '0',
-    		format: 'image/jpeg',
-    		transparent: true,
-    		//opacity: 0.5,
-    		attribution: "USGS National Map &copy; 2013"
-		});
 
 // Overlay layers
 
@@ -100,50 +92,56 @@ var Stamen_TonerLines = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/t
 
 
 //------ Vector and Marker Layers stuff
-var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.'),
-    denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
-    aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
-    golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
-var ames = L.marker([42, -93]).bindPopup('This is Ames, IA.');
+var edmonton = L.marker([53.5461, -113.4938]).bindPopup('This is Edmonton, AB Canada.'),
+    calgary   = L.marker([51.0447, -114.0719]).bindPopup('This is Calgary, AB Canada.'),
+    vancouver = L.circleMarker([49.2827, -123.1207]).bindPopup('This is Vancouver, BC Canada.'),
+    winnipeg    = L.circleMarker([49.8951, -97.1384]).bindPopup('This is Winnipeg, MB Canada.');
 
 var polygon = L.polygon([
-    [42, -93],
-    [42, -94],
-    [43, -94],
-	[43, -93]
+    [52.31, -117.21],
+    [50.70, -117.21],
+    [50.70, -114.73],
+    [52.31, -114.73]
 ],{
-    color: 'yellow',
+    color: 'black',
     fillColor: 'yellow',
-    fillOpacity: 0.9
+    fillOpacity: 0.35
 });
+          
+var circle = L.circle([52.8734, -117.9543], {
+          color: "black",
+          fillColor: "purple",
+          fillOpacity: 0.35,
+          radius: 75000.0
+      });          
 
 
 
-var pointA = new L.LatLng(40.13, -93.22);
-var pointB = new L.LatLng(44.23, -95.70);
-var pointC = new L.LatLng(46.1, -93.2);
-var pointD = new L.LatLng(44.2, -91.1);
-var pointList = [pointA, pointB, pointC, pointD];
+
+var pointA = new L.LatLng(53.5461, -113.4938);
+var pointB = new L.LatLng(51.0447, -114.0719);
+var pointC = new L.LatLng(49.8951, -97.1384);
+var pointD = new L.LatLng(44.9778, -93.2650);
+var pointE = new L.LatLng(42.0308, -93.6319);
+var pointList = [pointA, pointB, pointC, pointD, pointE];
 
 var myPolyline = new L.Polyline(pointList, {
     color: 'red',
     weight: 3,
-    opacity: 0.5,
+    opacity: 0.8,
     smoothFactor: 1
 });
 
 
 
-
-
-var someStuff = L.layerGroup([littleton, denver, aurora, golden, ames, polygon]);
+var cities = L.layerGroup([edmonton, calgary, vancouver, winnipeg]);
 
 
 //create the map
 var map = L.map('map', {
     		center: new L.LatLng(42.0908, -93.6208),
     		zoom: 4,
-    		layers: [OSM, nexrad, someStuff]
+    		layers: [OpenTopoMap, cities]
 		});
 
 
@@ -158,11 +156,12 @@ var map = L.map('map', {
 		};
        		
 		var overlayMaps = {
-			"Stamen TonerLines": Stamen_TonerLines,
-			"Some Stuff": someStuff,
-			"Radar": nexrad,
-      "polyline": myPolyline
-			
+			"Banff National Park Location ": polygon,
+            "Jasper National Park Location": circle,
+            "Ames to Edmonton Route": myPolyline,
+			"Cities": cities,
+            "Radar": nexrad
+			   
 		};
 	
 		L.control.layers(baseMaps, overlayMaps).addTo(map);
