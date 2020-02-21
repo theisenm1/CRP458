@@ -50,6 +50,12 @@
 <div id="map"></div>
       
       <script>
+          
+var map = L.map('map', {
+    center: new L.LatLng(42.0908, -93.6208),
+    zoom: 3,
+    layers: [OpenTopoMap]
+});
       
       console.clear();
 
@@ -70,21 +76,14 @@ var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 });
 
 // Overlay layers
-          
-
-L.geoJSON(places).addTo(map);            
-
+L.geoJSON(places).addTo(map);
 
 //------ Vector and Marker Layers stuff
 
 
 
 //create the map
-var map = L.map('map', {
-    		center: new L.LatLng(42.0908, -93.6208),
-    		zoom: 3,
-    		layers: [OpenTopoMap]
-		});
+
 
 		//layer control
 		var baseMaps = {
@@ -92,12 +91,10 @@ var map = L.map('map', {
             "Esri World Imagery": Esri_WorldImagery,
             "OpenStreetMap": OSM
             
-            
-			
 		};
        		
 		var overlayMaps = {
-            "Places I have Lived": places
+        "Places I have Lived": places    
 			   
 		};
 	
