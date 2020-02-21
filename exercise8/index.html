@@ -94,17 +94,25 @@ var map = L.map('map', {
     layers: [OpenTopoMap]
 });    
           
-var myPlacesLayer = L.geoJSON(places).addTo(map);
+var myPlacesLayer = L.geoJSON(places, {
+    onEachFeature: function (feature, layer) {
+        layer.bindPopup('<h1>'+feature.properties.state+'</h1><p>coordinates: '+feature.geometry.coordinates+'</p>')
+    }
+})
         
-var myEcosystemLayer = L.geoJSON(ecosystem).addTo(map);  
+var myEcosystemLayer = L.geoJSON(ecosystem, {
+    onEachFeature: function (feature, layer) {
+        layer.bindPopup('<h1>'+feature.properties.SDSFEATURENAME+'</h1><p>Description: '+feature.properties.SDSFEATUREDESCRIPTION+'</p>')
+    }
+})
         
 var myRouteLayer = L.geoJSON(route, {
                     style: myStyle,
-                }).addTo(map);
+                })
          
 var myNeverBeenLayer = L.geoJSON(neverBeen, {
                     style: myNewStyle,
-                }).addTo(map);           
+                })          
 
 //------ Vector and Marker Layers stuff
 
