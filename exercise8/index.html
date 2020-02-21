@@ -10,7 +10,8 @@
 	  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
       
       <script src="../geojson/map.geojson"></script>
-          
+      <script src="../geojson/Ecosytem_Restoration_Projects.geojson"></script> 
+      
       <style>
       html, body, 
 
@@ -51,12 +52,7 @@
       
       <script>
           
-var map = L.map('map', {
-    center: new L.LatLng(42.0908, -93.6208),
-    zoom: 3,
-    layers: [OpenTopoMap]
-});
-      
+
       console.clear();
 
 //Base Layers
@@ -76,15 +72,20 @@ var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 });
 
 // Overlay layers
-L.geoJSON(places).addTo(map);
+
 
 //------ Vector and Marker Layers stuff
 
 
 
 //create the map
+var map = L.map('map', {
+    center: new L.LatLng(42.0908, -93.6208),
+    zoom: 2,
+    layers: [OpenTopoMap]
+});
 
-
+    
 		//layer control
 		var baseMaps = {
             "OpenTopoMap": OpenTopoMap,
@@ -94,10 +95,14 @@ L.geoJSON(places).addTo(map);
 		};
        		
 		var overlayMaps = {
-        "Places I have Lived": places    
-			   
+        "Places I have Lived": places,    
+		"Ecosystem Project Locations": ecosystem   
 		};
-	
+          
+          
+	    L.geoJSON(places).addTo(map);
+        L.geoJSON(ecosystem).addTo(map);  
+          
 		L.control.layers(baseMaps, overlayMaps).addTo(map);
 </script>
       
