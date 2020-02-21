@@ -8,7 +8,9 @@
       <link href="../Assignment1.css" rel="stylesheet" type="text/css">
 	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> 
 	  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-	  
+      
+      <script src="../geojson/map.geojson"></script>
+          
       <style>
       html, body, 
 
@@ -35,7 +37,8 @@
             <a href="https://theisenm1.github.io/CRP458/exercise4/#11/42.7354/-93.6791">Exercise 4</a>
             <a href="https://theisenm1.github.io/CRP458/exercise5/">Exercise 5</a>
             <a href="https://theisenm1.github.io/CRP458/exercise6/">Exercise 6</a>
-            <a href="https://theisenm1.github.io/CRP458/exercise7/">Exercise 7</a>   <a href="">Exercise 8</a>  
+            <a href="https://theisenm1.github.io/CRP458/exercise7/">Exercise 7</a>   
+            <a href="">Exercise 8</a>  
             <a href="https://theisenm1.github.io/CRP458/Assignment1/">Assignment 1</a>   
                  
             </div>
@@ -60,75 +63,41 @@ var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
 	maxZoom: 17,
 	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 });
+          
+var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18
+});
 
 // Overlay layers
           
-var NASAGIBS_ModisTerraChlorophyll = L.tileLayer('https://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_Chlorophyll_A/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
-	attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.',
-	bounds: [[-85.0511287776, -179.999999975], [85.0511287776, 179.999999975]],
-	minZoom: 1,
-	maxZoom: 7,
-	format: 'png',
-	time: '',
-	tilematrixset: 'GoogleMapsCompatible_Level',
-	opacity: 0.75
-});  
-          
-var JusticeMap_income = L.tileLayer('http://www.justicemap.org/tile/{size}/income/{z}/{x}/{y}.png', {
-	attribution: '<a href="http://www.justicemap.org/terms.php">Justice Map</a>',
-	size: 'county',
-	bounds: [[14, -180], [72, -56]]
-});          
+
+L.geoJSON(places).addTo(map);            
 
 
 //------ Vector and Marker Layers stuff
-var monument = L.marker([36.9989, -109.0452]).bindPopup('This is the four corners Monument.'),
-    lincoln   = L.marker([38.8893, -77.0502]).bindPopup('This is the Lincoln Memorial in Washington, DC.'),
-    rushmore = L.circleMarker([43.8791, -103.4591]).bindPopup('This is Mount Rushmore in South Dakota.');
 
-var polygon = L.polygon([
-    [42.86, -109.86],
-    [40.86, -109.86],
-    [40.86, -107.73],
-    [42.86, -107.73]
-],{
-    color: 'black',
-    fillColor: 'yellow',
-    fillOpacity: 0.35
-});
-          
-var circle = L.circle([44.9778, -93.2650], {
-          color: "black",
-          fillColor: "purple",
-          fillOpacity: 0.35,
-          radius: 75000.0
-      });          
-
-
-var cities = L.layerGroup([monument, lincoln, rushmore]);
 
 
 //create the map
 var map = L.map('map', {
     		center: new L.LatLng(42.0908, -93.6208),
-    		zoom: 4,
-    		layers: [Esri_WorldImagery, polygon]
+    		zoom: 3,
+    		layers: [OpenTopoMap]
 		});
 
 		//layer control
 		var baseMaps = {
-            "Esri World Imagery": Esri_WorldImagery,
             "OpenTopoMap": OpenTopoMap,
+            "Esri World Imagery": Esri_WorldImagery,
+            "OpenStreetMap": OSM
+            
             
 			
 		};
        		
 		var overlayMaps = {
-			"Region where I worked this past summer": polygon,
-            "Minneapolis, where I am from": circle,
-			"Cities": cities,
-            "Chlorophyll": NASAGIBS_ModisTerraChlorophyll,
-            "US Income": JusticeMap_income
+            "Places I have Lived": places
 			   
 		};
 	
