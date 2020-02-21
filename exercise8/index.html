@@ -11,6 +11,8 @@
       
       <script src="../geojson/map.geojson"></script>
       <script src="../geojson/Ecosytem_Restoration_Projects.geojson"></script> 
+      <script src="../geojson/route.geojson"></script> 
+      <script src="../geojson/neverbeen.geojson"></script>
       
       <style>
       html, body, 
@@ -72,7 +74,17 @@ var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 });
 
 // Overlay layers
-
+var myStyle = {
+    "color": "#EB1F69",
+    "weight": 5,
+    "opacity": 0.65,
+};
+          
+var myNewStyle = {
+    "color": "#111206",
+    "weight": 5,
+    "opacity": 1,
+};          
 
 //------ Vector and Marker Layers stuff
 
@@ -81,7 +93,7 @@ var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 //create the map
 var map = L.map('map', {
     center: new L.LatLng(42.0908, -93.6208),
-    zoom: 2,
+    zoom: 3,
     layers: [OpenTopoMap]
 });
 
@@ -96,14 +108,25 @@ var map = L.map('map', {
        		
 		var overlayMaps = {
         "Places I have Lived": places,    
-		"Ecosystem Project Locations": ecosystem   
+		"Ecosystem Project Locations": ecosystem,
+        "Places I have never been": neverBeen   
 		};
-          
+  
+ 
           
 	    L.geoJSON(places).addTo(map);
+        
         L.geoJSON(ecosystem).addTo(map);  
-          
-		L.control.layers(baseMaps, overlayMaps).addTo(map);
+        
+        L.geoJSON(route, {
+            style: myStyle,
+        }).addTo(map);
+         
+        L.geoJSON(neverBeen, {
+            style: myNewStyle,
+        }).addTo(map);  
+		
+          L.control.layers(baseMaps, overlayMaps).addTo(map);
 </script>
       
   </body>

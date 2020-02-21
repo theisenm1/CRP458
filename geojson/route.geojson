@@ -1,0 +1,1 @@
+var route = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"LineString","coordinates":[[-112.06054687499999,33.46810795527896],[-95.9326171875,41.244772343082076],[-93.2958984375,44.96479793033101]]}}]}
