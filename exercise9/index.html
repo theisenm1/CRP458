@@ -11,6 +11,7 @@
       
       <script src="../geojson/Ecosytem_Restoration_Projects.geojson"></script>  
       <script src="../geojson/statesData.geojson"></script>
+      <script src="../geojson/MajorUSCities.geojson"></script>
       
       <style>
       html, body, 
@@ -19,7 +20,7 @@
           z-index:999;
           } 
           
-          .info {
+.info {
     padding: 6px 8px;
     font: 14px/16px Arial, Helvetica, sans-serif;
     background: white;
@@ -101,22 +102,11 @@ var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 });
 
 // Overlay layers
-var myStyle = {
-    "color": "#EB1F69",
-    "weight": 5,
-    "opacity": 0.65,
-};
-          
-var myNewStyle = {
-    "color": "#111206",
-    "weight": 5,
-    "opacity": 1,
-}; 
           
 var myStatesLayer =  L.geoJson(statesData, {
     style: style,
     onEachFeature: onEachFeature
-})          
+});          
 
 var map = L.map('map', {
     center: new L.LatLng(42.0908, -93.6208),
@@ -125,7 +115,12 @@ var map = L.map('map', {
 });    
           
         
-
+var myMajorCities = L.geoJson(majorCities, {
+    onEachFeature: function (feature, layer) {
+        layer.bindPopup('<h1>'+feature.properties.NAME+'</h1><p>Population: '+feature.properties.POPULATION+'</p>')
+    }
+});         
+    
 function getColor(d) {
     return d > 1000 ? '#08589e' :
            d > 500  ? '#2b8cbe' :
@@ -201,13 +196,19 @@ function onEachFeature(feature, layer) {
 		};
        		
 		var overlayMaps = {    
-        "US Population Density": myStatesLayer 
-            
+        "US Population Density": myStatesLayer, 
+        "Major Cities Population": myMajorCities    
 		};
   
  
           L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+// Major City Population Layer          
+
           
+          
+          
+// US Population Density Layer          
 map.on('overlayadd', function(eventLayer){
     if (eventLayer.name === 'US Population Density'){
         map.addControl(info);
