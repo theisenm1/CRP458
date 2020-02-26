@@ -9,17 +9,40 @@
 	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> 
 	  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
       
-      <script src="../geojson/map.geojson"></script>
-      <script src="../geojson/Ecosytem_Restoration_Projects.geojson"></script> 
-      <script src="../geojson/route.geojson"></script> 
-      <script src="../geojson/neverbeen.geojson"></script>
+      <script src="../geojson/Ecosytem_Restoration_Projects.geojson"></script>  
+      <script src="../geojson/statesData.geojson"></script>
       
       <style>
       html, body, 
 
           #map { height: 480px; margin: 0 auto; padding: 0; 
           z-index:999;
-          }  
+          } 
+          
+          .info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #525252;
+}
+          
+.legend {
+    line-height: 20px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}       
       </style>
 	  	
   </head>
@@ -87,33 +110,80 @@ var myNewStyle = {
     "weight": 5,
     "opacity": 1,
 }; 
+          
+var myStatesLayer =  L.geoJson(statesData, {
+    style: style,
+    onEachFeature: onEachFeature
+})          
 
 var map = L.map('map', {
     center: new L.LatLng(42.0908, -93.6208),
     zoom: 3,
-    layers: [OpenTopoMap]
+    layers: [Esri_WorldImagery, myStatesLayer]
 });    
           
-var myPlacesLayer = L.geoJSON(places, {
-    onEachFeature: function (feature, layer) {
-        layer.bindPopup('<h1>'+feature.properties.state+'</h1><p>coordinates: '+feature.geometry.coordinates+'</p>')
-    }
-})
         
-var myEcosystemLayer = L.geoJSON(ecosystem, {
-    onEachFeature: function (feature, layer) {
-        layer.bindPopup('<h1>'+feature.properties.SDSFEATURENAME+'</h1><p>Description: '+feature.properties.SDSFEATUREDESCRIPTION+'</p>')
-    }
-})
-        
-var myRouteLayer = L.geoJSON(route, {
-                    style: myStyle,
-                })
-         
-var myNeverBeenLayer = L.geoJSON(neverBeen, {
-                    style: myNewStyle,
-                })          
 
+function getColor(d) {
+    return d > 1000 ? '#08589e' :
+           d > 500  ? '#2b8cbe' :
+           d > 200  ? '#4eb3d3' :
+           d > 100  ? '#7bccc4' :
+           d > 50   ? '#a8ddb5' :
+           d > 20   ? '#ccebc5' :
+           d > 10   ? '#e0f3db' :
+                      '#f7fcf0';
+}
+          
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.density),
+        weight: 2,
+        opacity: 2.5,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.75
+    };
+}
+
+          
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+  info.update(layer.feature.properties);  
+}  
+          
+function resetHighlight(e) {
+   myStatesLayer.resetStyle(e.target);
+   info.update();
+}
+          
+
+                      
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}                      
+                      
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+} 
+          
+        
+          
 //------ Vector and Marker Layers stuff
 
 
@@ -128,11 +198,8 @@ var myNeverBeenLayer = L.geoJSON(neverBeen, {
             
 		};
        		
-		var overlayMaps = {
-        "Places I have Lived": myPlacesLayer,    
-		"Ecosystem Project Locations": myEcosystemLayer,
-        "My Route": myRouteLayer,
-        "Places I have never been": myNeverBeenLayer 
+		var overlayMaps = {    
+        "US Population Density": myStatesLayer 
             
 		};
   
@@ -140,6 +207,68 @@ var myNeverBeenLayer = L.geoJSON(neverBeen, {
           
 
           L.control.layers(baseMaps, overlayMaps).addTo(map);
+          
+map.on('overlayadd', function(eventLayer){
+    if (eventLayer.name === 'US Population Density'){
+        map.addControl(info);
+    } 
+});
+
+map.on('overlayremove', function(eventLayer){
+    if (eventLayer.name === 'US Population Density'){
+         map.removeControl(info);
+    } 
+});
+          
+map.on('overlayadd', function(eventLayer){
+    if (eventLayer.name === 'US Population Density'){
+        map.addControl(legend);
+    } 
+});
+
+map.on('overlayremove', function(eventLayer){
+    if (eventLayer.name === 'US Population Density'){
+         map.removeControl(legend);
+    } 
+});          
+          
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
+        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
+        : 'Hover over a state');
+};
+
+info.addTo(map);
+          
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(map); 
+          
 </script>
       
   </body>
