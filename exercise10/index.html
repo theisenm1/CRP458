@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Exercise 9 geoJSON Leaflet Map</title>
+      
+<meta name="description" content="LA 458/558 15a Leaflet with layer control - 2020" />
+      
+      <link href="../Assignment1.css" rel="stylesheet" type="text/css">
+	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> 
+	  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+      
+      <script src="../geojson/Ecosytem_Restoration_Projects.geojson"></script>  
+      <script src="../geojson/statesData.geojson"></script>
+      <script src="../geojson/MajorUSCities.geojson"></script>
+      
+      <style>
+      html, body, 
+
+          #map { height: 700px; margin: 0 auto; padding: 0; 
+          z-index:999;
+          } 
+          
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #525252;
+}
+          
+.legend {
+    line-height: 20px;
+    color: #555;
+    background-color: wheat
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.85;
+}       
+      </style>
+	  	
+  </head>
+    
+  <body>
+    
+    <div class="navbar">
+            <a href="https://theisenm1.github.io/CRP458/">Home</a>
+            <a href="#news">News</a>
+            <div class="dropdown">
+            <button class="dropbtn">Exercises and Assignments 
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+            <a href="https://theisenm1.github.io/CRP458/exercise1/">About Me</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise2/">Exercise 2</a>
+            <a href="https://github.com/theisenm1/CRP458/blob/master/exercise3/GeoJSON%20Ag%20Drainage%20Wells.geojson" target="_blank">Exercise 3</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise4/#11/42.7354/-93.6791">Exercise 4</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise5/">Exercise 5</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise6/">Exercise 6</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise7/">Exercise 7</a>   
+            <a href="https://theisenm1.github.io/CRP458/exercise8/">Exercise 8</a>  
+            <a href="https://theisenm1.github.io/CRP458/exercise9/">Exercise 9</a>     
+            <a href="https://theisenm1.github.io/CRP458/Assignment1/">Assignment 1</a>   
+                 
+            </div>
+        </div> 
+    </div> 
+      
+         <h1 id="h1"><strong>geoJSON leaflet Map</strong></h1>
+      
+<div id="map"></div>
+      
+      <script>
+          
+
+      console.clear();
+          
+      
+
+//Base Layers
+
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+          
+var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18
+});
+
+// Overlay layers
+          
+var myStatesLayer =  L.geoJson(statesData, {
+    style: style,
+    onEachFeature: onEachFeature
+});          
+
+var map = L.map('map', {
+    center: new L.LatLng(42.0908, -93.6208),
+    zoom: 3,
+    layers: [Esri_WorldImagery, myStatesLayer]
+});    
+          
+        
+var myMajorCities = L.geoJson(majorCities, {
+    onEachFeature: function (feature, layer) {
+        layer.bindPopup('<h1>'+feature.properties.NAME+'</h1><p>Population: '+feature.properties.POPULATION+'</p>')
+    }
+});         
+    
+function getColor(d) {
+    return d > 1000 ? '#08589e' :
+           d > 500  ? '#2b8cbe' :
+           d > 200  ? '#4eb3d3' :
+           d > 100  ? '#7bccc4' :
+           d > 50   ? '#a8ddb5' :
+           d > 20   ? '#ccebc5' :
+           d > 10   ? '#e0f3db' :
+                      '#f7fcf0';
+}
+          
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.density),
+        weight: 2,
+        opacity: 2.5,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.75
+    };
+}
+
+          
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+  info.update(layer.feature.properties);  
+}  
+          
+function resetHighlight(e) {
+   myStatesLayer.resetStyle(e.target);
+   info.update();
+}
+          
+
+                      
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}                      
+                      
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+} 
+          
+        
+          
+//------ Vector and Marker Layers stuff
+
+
+
+//create the map
+    
+		//layer control
+		var baseMaps = {
+            "OpenTopoMap": OpenTopoMap,
+            "Esri World Imagery": Esri_WorldImagery,
+            "OpenStreetMap": OSM
+            
+		};
+       		
+		var overlayMaps = {    
+        "US Population Density": myStatesLayer, 
+        "Major Cities Population": myMajorCities    
+		};
+  
+ 
+          L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+// Major City Population Layer          
+
+          
+          
+          
+// US Population Density Layer          
+map.on('overlayadd', function(eventLayer){
+    if (eventLayer.name === 'US Population Density'){
+        map.addControl(info);
+    } 
+});
+
+map.on('overlayremove', function(eventLayer){
+    if (eventLayer.name === 'US Population Density'){
+         map.removeControl(info);
+    } 
+});
+          
+map.on('overlayadd', function(eventLayer){
+    if (eventLayer.name === 'US Population Density'){
+        map.addControl(legend);
+    } 
+});
+
+map.on('overlayremove', function(eventLayer){
+    if (eventLayer.name === 'US Population Density'){
+         map.removeControl(legend);
+    } 
+});          
+          
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
+        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
+        : 'Hover over a state');
+};
+
+info.addTo(map);
+          
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(map); 
+          
+</script>
+      
+  </body>
+</html>
+    
