@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <title>Exercise 9 geoJSON Leaflet Map</title>
+      <title>Exercise 10 geoJSON Leaflet Map</title>
       
 <meta name="description" content="LA 458/558 15a Leaflet with layer control - 2020" />
       
@@ -44,7 +44,20 @@
     float: left;
     margin-right: 8px;
     opacity: 0.85;
-}       
+}
+
+.myLegend {
+    line-height: 20px;
+    color: #555;
+    background-color: wheat
+}
+.myLegend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.85;
+}          
       </style>
 	  	
   </head>
@@ -117,10 +130,37 @@ var map = L.map('map', {
           
         
 var myMajorCities = L.geoJson(majorCities, {
-    onEachFeature: function (feature, layer) {
+    myStyle: style,
+    pointToLayer: createCircleMarker,
+        onEachFeature: function (feature, layer) {
         layer.bindPopup('<h1>'+feature.properties.NAME+'</h1><p>Population: '+feature.properties.POPULATION+'</p>')
     }
-});         
+}); 
+          
+function getMyColor(d) {
+    return d > 5000000  ? '#67000d' :
+           d > 2500000  ? '#cb181d' :
+           d > 2000000  ? '#fb6a4a' :
+           d > 1500000  ? '#fcae91' :
+           d > 1000000  ? '#fcbba1' :
+                          '#fee5d9';
+}
+                
+
+ 
+    // This will be run when L.geoJSON creates the point layer from the GeoJSON data.
+function createCircleMarker( feature, latlng ){
+  // Change the values of these options to change the symbol's appearance
+  let options = {
+    radius: 8,
+    fillColor: getMyColor(feature.properties.POPULATION),
+    color: "black",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  }
+  return L.circleMarker( latlng, options );
+}          
     
 function getColor(d) {
     return d > 1000 ? '#08589e' :
@@ -166,7 +206,6 @@ function resetHighlight(e) {
    info.update();
 }
           
-
                       
 function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
@@ -202,12 +241,7 @@ function onEachFeature(feature, layer) {
 		};
   
  
-          L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-// Major City Population Layer          
-
-          
-          
+          L.control.layers(baseMaps, overlayMaps).addTo(map);        
           
 // US Population Density Layer          
 map.on('overlayadd', function(eventLayer){
@@ -269,7 +303,40 @@ legend.onAdd = function (map) {
     return div;
 };
 
-legend.addTo(map); 
+legend.addTo(map);
+
+// This is for myMajorCities legend           
+map.on('overlayadd', function(eventLayer){
+    if (eventLayer.name === 'Major Cities Population'){
+        map.addControl(myLegend);
+    } 
+});
+
+map.on('overlayremove', function(eventLayer){
+    if (eventLayer.name === 'Major Cities Population'){
+         map.removeControl(myLegend);
+    } 
+}); 
+          
+var myLegend = L.control({position: 'bottomright'});
+
+myLegend.onAdd = function (map) {
+
+    var myDiv = L.DomUtil.create('myDiv', 'info myLegend'),
+        grades = [0, 1000000, 1500000, 2000000, 2500000, 5000000],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        myDiv.innerHTML +=
+            '<i style="background:' + getMyColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return myDiv;
+};
+
+myLegend.addTo(map);           
           
 </script>
       
