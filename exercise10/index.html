@@ -130,13 +130,17 @@ var map = L.map('map', {
           
         
 var myMajorCities = L.geoJson(majorCities, {
+    onEachFeature: addPopups,
     myStyle: style,
     pointToLayer: createCircleMarker,
-        onEachFeature: function (feature, layer) {
-        layer.bindPopup('<h1>'+feature.properties.NAME+'</h1><p>Population: '+feature.properties.POPULATION+'</p>')
+
+    style: function(feature) {
+    return {
+        radius: feature.properties.POPULATION/300000,
+        };
     }
-}); 
-          
+});
+       
 function getMyColor(d) {
     return d > 5000000  ? '#67000d' :
            d > 2500000  ? '#cb181d' :
@@ -158,8 +162,12 @@ function createCircleMarker( feature, latlng ){
     fillOpacity: 0.8
   }
   return L.circleMarker( latlng, options );
-}          
-    
+}     
+          
+   function addPopups(feature, layer) {        
+    layer.bindPopup('<h1>'+feature.properties.NAME+'</h1><p>Population: '+feature.properties.POPULATION+'</p>')
+   }
+          
 function getColor(d) {
     return d > 1000 ? '#08589e' :
            d > 500  ? '#2b8cbe' :
