@@ -145,9 +145,7 @@ function getMyColor(d) {
            d > 1000000  ? '#fcbba1' :
                           '#fee5d9';
 }
-                
 
- 
     // This will be run when L.geoJSON creates the point layer from the GeoJSON data.
 function createCircleMarker( feature, latlng ){
   // Change the values of these options to change the symbol's appearance
@@ -247,6 +245,7 @@ function onEachFeature(feature, layer) {
 map.on('overlayadd', function(eventLayer){
     if (eventLayer.name === 'US Population Density'){
         map.addControl(info);
+        map.removeControl(myLegend);
     } 
 });
 
@@ -328,7 +327,7 @@ myLegend.onAdd = function (map) {
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
-        myDiv.innerHTML +=
+        myDiv.innerHTML += 
             '<i style="background:' + getMyColor(grades[i] + 1) + '"></i> ' +
             grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
     }
@@ -336,8 +335,7 @@ myLegend.onAdd = function (map) {
     return myDiv;
 };
 
-myLegend.addTo(map);           
-          
+            
 </script>
       
   </body>
