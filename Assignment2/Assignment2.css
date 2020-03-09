@@ -1,7 +1,7 @@
 
 .navbar {
   overflow: hidden;
-  background-color: #fed976;
+  background-color: #252525;
   font-family: Arial;    
     
 }
@@ -9,7 +9,7 @@
 .navbar a {
   float: left;
   font-size: 16px;
-  color: #252525;
+  color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -27,7 +27,7 @@
   font-size: 16px;  
   border: none;
   outline: none;
-  color: #252525;
+  color: white;
   padding: 14px 16px;
   background-color: inherit;
   font-family: inherit;
