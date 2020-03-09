@@ -1,7 +1,7 @@
 
 .navbar {
   overflow: hidden;
-  background-color: #333;
+  background-color: #fed976;
   font-family: Arial;    
     
 }
@@ -9,7 +9,7 @@
 .navbar a {
   float: left;
   font-size: 16px;
-  color: white;
+  color: #252525;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -27,7 +27,7 @@
   font-size: 16px;  
   border: none;
   outline: none;
-  color: white;
+  color: #252525;
   padding: 14px 16px;
   background-color: inherit;
   font-family: inherit;
@@ -36,7 +36,7 @@
 }
 
 .navbar a:hover, .dropdown:hover .dropbtn {
-  background-color: #931F06;
+  background-color: #005824;
     
 }
 
@@ -76,8 +76,8 @@
         font-weight: normal;
         margin: 0 0 .4em;
         padding: 5px 10px;
-        background: #931F06;
-        color: #F5D231;
+        background: #005824;
+        color: #252525;
         padding-bottom: .2em;
 	    border-bottom: 1.5px solid gray;
         text-align: center;
@@ -89,7 +89,7 @@
         font: 100% Arial, Helvetica, sans-serif;
         padding: 1em 20px;
         background: #CFCDC5;
-        border-bottom: 8px solid #931F06;
+        border-bottom: 8px solid #005824;
 }
     #p1 {
         text-align: center
@@ -137,7 +137,7 @@
     
 } 
 
-  #software2 {
+    #software2 {
      font-size: 0.9em;
     
 }  
