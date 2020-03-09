@@ -94,6 +94,10 @@
     #p1 {
         text-align: center
 }
+    #p2 {
+        text-align: center;
+        font-size: 12px;
+    }
 
     img.firstImage {
         display: block;
