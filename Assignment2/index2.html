@@ -8,8 +8,7 @@
       <link href="../Assignment1.css" rel="stylesheet" type="text/css">
 	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> 
 	  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-        
-      <script src="../geojson/statesData.geojson"></script>
+    
 
       
       <style>
@@ -57,7 +56,7 @@
             <a href="https://theisenm1.github.io/CRP458/exercise9/">Exercise 9</a>
             <a href="https://theisenm1.github.io/CRP458/exercise10/">Exercise 10</a>     
             <a href="https://theisenm1.github.io/CRP458/Assignment1/">Assignment 1</a>
-            <a href="https://theisenm1.github.io/CRP458/Assignment2/" target="blank">Assignment 2</a>    
+            <a href="https://theisenm1.github.io/CRP458/Assignment2/" target="blank">Assignment 2 Project Description</a>    
                  
             </div>
         </div> 
@@ -72,7 +71,7 @@
 
       console.clear();
           
-//Base Layers
+//Base Layers, this is where I added in baselayers that I want to use as imagery
 
 var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
@@ -82,234 +81,42 @@ var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 18
 });
-
-// Overlay layers
           
-var myStatesLayer =  L.geoJson(statesData, {
-    style: style,
-    onEachFeature: onEachFeature
-});          
-
 var map = L.map('map', {
     center: new L.LatLng(42.0908, -93.6208),
     zoom: 3,
-    layers: [Esri_WorldImagery, myStatesLayer]
-});    
+    layers: [Esri_WorldImagery]
+});          
+
+// Overlay layers, this is where i will define my points and farms layers. I will also incorporate any functions for choropleth mapping, heat or cluster markers. 
           
         
-var myMajorCities = L.geoJson(majorCities, {
-    onEachFeature: addPopups,
-    myStyle: style,
-    pointToLayer: createCircleMarker,
-
-    style: function(feature) {
-    return {
-        radius: feature.properties.POPULATION/300000,
-        };
-    }
-});
-       
-function getMyColor(d) {
-    return d > 5000000  ? '#67000d' :
-           d > 2500000  ? '#cb181d' :
-           d > 2000000  ? '#fb6a4a' :
-           d > 1500000  ? '#fcae91' :
-           d > 1000000  ? '#fcbba1' :
-                          '#fee5d9';
-}
-
-    // This will be run when L.geoJSON creates the point layer from the GeoJSON data.
-function createCircleMarker( feature, latlng ){
-  // Change the values of these options to change the symbol's appearance
-  let options = {
-    radius: 8,
-    fillColor: getMyColor(feature.properties.POPULATION),
-    color: "black",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-  }
-  return L.circleMarker( latlng, options );
-}     
-          
-   function addPopups(feature, layer) {        
-    layer.bindPopup('<h1>'+feature.properties.NAME+'</h1><p>Population: '+feature.properties.POPULATION+'</p>')
-   }
-          
-function getColor(d) {
-    return d > 1000 ? '#08589e' :
-           d > 500  ? '#2b8cbe' :
-           d > 200  ? '#4eb3d3' :
-           d > 100  ? '#7bccc4' :
-           d > 50   ? '#a8ddb5' :
-           d > 20   ? '#ccebc5' :
-           d > 10   ? '#e0f3db' :
-                      '#f7fcf0';
-}
-          
-function style(feature) {
-    return {
-        fillColor: getColor(feature.properties.density),
-        weight: 2,
-        opacity: 2.5,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.75
-    };
-}
-
-          
-function highlightFeature(e) {
-    var layer = e.target;
-
-    layer.setStyle({
-        weight: 5,
-        color: '#666',
-        dashArray: '',
-        fillOpacity: 0.7
-    });
-
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
-  info.update(layer.feature.properties);  
-}  
-          
-function resetHighlight(e) {
-   myStatesLayer.resetStyle(e.target);
-   info.update();
-}
-          
-                      
-function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
-}                      
-                      
-function onEachFeature(feature, layer) {
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomToFeature
-    });
-} 
-          
         
-          
-//------ Vector and Marker Layers stuff
 
 
 
-//create the map
+//create the map, this is where I lay out the overlay and what is added to the map. 
     
 		//layer control
 		var baseMaps = {
-            "OpenTopoMap": OpenTopoMap,
             "Esri World Imagery": Esri_WorldImagery,
             "OpenStreetMap": OSM
             
 		};
        		
 		var overlayMaps = {    
-        "US Population Density": myStatesLayer, 
-        "Major Cities Population": myMajorCities    
+   
 		};
   
  
           L.control.layers(baseMaps, overlayMaps).addTo(map);        
           
 // US Population Density Layer          
-map.on('overlayadd', function(eventLayer){
-    if (eventLayer.name === 'US Population Density'){
-        map.addControl(info);
-        map.removeControl(myLegend);
-    } 
-});
 
-map.on('overlayremove', function(eventLayer){
-    if (eventLayer.name === 'US Population Density'){
-         map.removeControl(info);
-    } 
-});
           
-map.on('overlayadd', function(eventLayer){
-    if (eventLayer.name === 'US Population Density'){
-        map.addControl(legend);
-    } 
-});
 
-map.on('overlayremove', function(eventLayer){
-    if (eventLayer.name === 'US Population Density'){
-         map.removeControl(legend);
-    } 
-});          
-          
-var info = L.control();
 
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
 
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-        : 'Hover over a state');
-};
-
-info.addTo(map);
-          
-var legend = L.control({position: 'bottomright'});
-
-legend.onAdd = function (map) {
-
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-        labels = [];
-
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
-
-    return div;
-};
-
-legend.addTo(map);
-
-// This is for myMajorCities legend           
-map.on('overlayadd', function(eventLayer){
-    if (eventLayer.name === 'Major Cities Population'){
-        map.addControl(myLegend);
-    } 
-});
-
-map.on('overlayremove', function(eventLayer){
-    if (eventLayer.name === 'Major Cities Population'){
-         map.removeControl(myLegend);
-    } 
-}); 
-          
-var myLegend = L.control({position: 'bottomright'});
-
-myLegend.onAdd = function (map) {
-
-    var myDiv = L.DomUtil.create('myDiv', 'info myLegend'),
-        grades = [0, 1000000, 1500000, 2000000, 2500000, 5000000],
-        labels = [];
-
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        myDiv.innerHTML += 
-            '<i style="background:' + getMyColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
-
-    return myDiv;
-};
 
             
 </script>
