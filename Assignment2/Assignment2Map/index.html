@@ -76,13 +76,86 @@ var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     maxZoom: 18
 });
           
+ var myFarmsLayer =  L.geoJson(myISUResearchFarms, {
+    style: style,
+    onEachFeature: onEachFeature
+});          
+          
 var map = L.map('map', {
     center: new L.LatLng(42.0008, -93.7208),
     zoom: 10,
-    layers: [Esri_WorldImagery]
+    layers: [Esri_WorldImagery, myFarmsLayer]
 });          
 
 // Overlay layers, this is where i will define my points and farms layers. I will also incorporate any functions for choropleth mapping, heat or cluster markers. 
+
+          // farms JS         
+function getColor(d) {
+    return T = Affiliate Farm ? '#08589e' :
+           T = 500  ? '#2b8cbe' :
+           T = 200  ? '#4eb3d3' :
+           T = 100  ? '#7bccc4' :
+           T = 50   ? '#a8ddb5' :
+           T = 20   ? '#ccebc5' :
+           T = 10   ? '#e0f3db' :
+                      '#f7fcf0';
+}
+          
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.Farm_Type_),
+        weight: 2,
+        opacity: 2.5,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.75
+    };
+}
+          
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+    
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+  info.update(layer.feature.properties);  
+}  
+     
+    
+    
+function resetHighlight(e) {
+   myStatesLayer.resetStyle(e.target);
+   info.update();
+} 
+          
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}
+          
+ function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+}         
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          // Natural Areas JS
 var MyMarkers = L.markerClusterGroup();
           
 var NaturalAreaPoints = L.geoJSON(myNaturalAreas, {
@@ -106,7 +179,8 @@ map.addLayer(MyMarkers);
             
 		};
        		
-		var overlayMaps = {    
+		var overlayMaps = {
+        "ISU Research Farms": myFarmsLayer,    
         "Natural Areas": MyMarkers
 		};
   
