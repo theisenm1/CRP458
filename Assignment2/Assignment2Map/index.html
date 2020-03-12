@@ -12,7 +12,7 @@
       
       <link rel="stylesheet" href="https://theisenm1.github.io/CRP458/Assignment2/cluster_files_dist/MarkerCluster.css" />
       <link rel="stylesheet" href="https://theisenm1.github.io/CRP458/Assignment2/cluster_files_dist/MarkerCluster.Default.css" />
-      <script src="https://github.com/theisenm1/CRP458/blob/master/Assignment2/cluster_files_dist/leaflet.markercluster.js"></script>
+      <script src="https://theisenm1.github.io/CRP458/Assignment2/cluster_files_dist/leaflet.markercluster-src.js"></script>
       
       <script src="/geojson/ISU_Research_Farms.geojson"></script>
       <script src="/geojson/Natural_Areas.geojson"></script>
@@ -83,20 +83,20 @@ var map = L.map('map', {
 });          
 
 // Overlay layers, this is where i will define my points and farms layers. I will also incorporate any functions for choropleth mapping, heat or cluster markers. 
-var NaturalAreaPoints = L.geoJSON(myNaturalAreas)
+var MyMarkers = L.markerClusterGroup();
           
-var Mymarkers = L.markerClusterGroups();
+var NaturalAreaPoints = L.geoJSON(myNaturalAreas, {
+               onEachFeature: function (feature, layer) {
+                layer.bindPopup(feature.properties.LandUseLan);
+    }                  
+});
           
-for (var i = 0; i < addressPoints.length; i++) {
-		  var a = addressPoints[i];
-		  var title = a[2];
-		  var marker = L.marker(new L.LatLng(a[0], a[1]), {
-		    title: title
-		  });       
-		  marker.bindPopup(title);
-		  markers.addLayer(marker);
+          
 
-
+MyMarkers.addLayer(NaturalAreaPoints);
+          
+          
+map.addLayer(MyMarkers);
 //create the map, this is where I lay out the overlay and what is added to the map. 
     
 		//layer control
@@ -107,20 +107,20 @@ for (var i = 0; i < addressPoints.length; i++) {
 		};
        		
 		var overlayMaps = {    
-   
+        "Natural Areas": MyMarkers
 		};
   
  
           L.control.layers(baseMaps, overlayMaps).addTo(map);        
           
 // US Population Density Layer          
-      </script>
+     
           
 
 
 
 
-            
+      </script>
 
  <footer id="feet">
          Matt Theisen March 12th, 2020 <br>
