@@ -14,8 +14,8 @@
       <link rel="stylesheet" href="https://theisenm1.github.io/CRP458/Assignment2/cluster_files_dist/MarkerCluster.Default.css" />
       <script src="https://theisenm1.github.io/CRP458/Assignment2/cluster_files_dist/leaflet.markercluster-src.js"></script>
       
-      <script src="/geojson/ISU_Research_Farms.geojson"></script>
-      <script src="/geojson/Natural_Areas.geojson"></script>
+      <script src="../../geojson/ISU_Research_Farms.geojson"></script>
+      <script src="../../geojson/Natural_Areas.geojson"></script>
       
       <style>
       html, body, 
@@ -23,6 +23,19 @@
           #map { height: 700px; margin: 0 auto; padding: 0; 
           z-index:999;
           } 
+          
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #525252;
+}          
                         
       </style>
 	  	
@@ -61,10 +74,7 @@
 <div id="map"></div>
       
       <script>
-          
-
-      console.clear();
-          
+             
 //Base Layers, this is where I added in baselayers that I want to use as imagery
 
 var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -90,20 +100,20 @@ var map = L.map('map', {
 // Overlay layers, this is where i will define my points and farms layers. I will also incorporate any functions for choropleth mapping, heat or cluster markers. 
 
           // farms JS         
-function getColor(d) {
-    return T = Affiliate Farm ? '#08589e' :
-           T = 500  ? '#2b8cbe' :
-           T = 200  ? '#4eb3d3' :
-           T = 100  ? '#7bccc4' :
-           T = 50   ? '#a8ddb5' :
-           T = 20   ? '#ccebc5' :
-           T = 10   ? '#e0f3db' :
-                      '#f7fcf0';
+//function getColor(d) {
+    return d > 1000000 ? '#08589e' :
+           d > 800000  ? '#2b8cbe' :
+           d > 600000  ? '#4eb3d3' :
+           d > 400000  ? '#7bccc4' :
+           d > 200000  ? '#a8ddb5' :
+           d > 100000  ? '#ccebc5' :
+           d > 50000   ? '#e0f3db' :
+                        '#f7fcf0';
 }
-          
-function style(feature) {
+          // This is where I start to determine how my map will be colored
+//function style(feature) {
     return {
-        fillColor: getColor(feature.properties.Farm_Type_),
+        fillColor: getColor(feature.properties.Shape_Area),
         weight: 2,
         opacity: 2.5,
         color: 'white',
@@ -111,11 +121,11 @@ function style(feature) {
         fillOpacity: 0.75
     };
 }
-          
-function highlightFeature(e) {
-    var layer = e.target;
+          // this function allows me to hover over a polygon and get a result
+//function highlightFeature(e) {
+    //var layer = e.target;
 
-    layer.setStyle({
+    //layer.setStyle({
         weight: 5,
         color: '#666',
         dashArray: '',
@@ -129,7 +139,7 @@ function highlightFeature(e) {
 }  
      
     
-    
+    // this function reset the polygone when the cursor is no longer hovering
 function resetHighlight(e) {
    myStatesLayer.resetStyle(e.target);
    info.update();
@@ -147,14 +157,7 @@ function zoomToFeature(e) {
     });
 }         
           
-          
-          
-          
-          
-          
-          
-          
-          
+              
           // Natural Areas JS
 var MyMarkers = L.markerClusterGroup();
           
@@ -187,8 +190,24 @@ map.addLayer(MyMarkers);
  
           L.control.layers(baseMaps, overlayMaps).addTo(map);        
           
-// US Population Density Layer          
-     
+// US Population Density Layer
+          
+var info = L.control();
+          
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>ISU Research Farm Area</h4>' +  (props ?
+        '<b>' + props.Farm_Name_ + '</b><br />' + props.Shape_Area + 'ft<sup>2</sup>'
+        : 'Hover over a farm');
+};
+
+info.addTo(map);     
           
 
 
@@ -197,7 +216,7 @@ map.addLayer(MyMarkers);
       </script>
 
  <footer id="feet">
-         Matt Theisen March 12th, 2020 <br>
+         Matt Theisen March 13th, 2020 <br>
          Image obtained from <a id="SecondLink"; href="https://ortho.gis.iastate.edu/client.cgi?zoom=900&x0=469163&y0=4653689&layer=naip_2019_nc&pwidth=600&pheight=450" title="ISU GIS OrthoServer" color="green" target="blank">ISU GIS OrthoServer</a>
         </footer>     
   </body>
