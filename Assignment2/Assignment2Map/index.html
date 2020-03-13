@@ -93,7 +93,7 @@ var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           
 var map = L.map('map', {
     center: new L.LatLng(42.0008, -93.7208),
-    zoom: 10,
+    zoom: 11,
     layers: [Esri_WorldImagery, myFarmsLayer]
 });          
 
@@ -101,14 +101,14 @@ var map = L.map('map', {
 
           // farms JS         
 function getColor(d) {
-    return d > 1000000 ? '#08589e' :
-           d > 800000  ? '#2b8cbe' :
-           d > 600000  ? '#4eb3d3' :
-           d > 400000  ? '#7bccc4' :
-           d > 200000  ? '#a8ddb5' :
-           d > 100000  ? '#ccebc5' :
-           d > 50000   ? '#e0f3db' :
-                        '#f7fcf0';
+    return d = "Affiliate Farms"     ? '#08589e' :
+           d = "Research Farms"      ? '#2b8cbe' :
+           d = "Teaching Farms"      ? '#4eb3d3' :
+           d = "ISU Campus"          ? '#7bccc4' :
+           d = "LAR Farm"            ? '#a8ddb5' :
+           d = "Leased"              ? '#ccebc5' :
+           d = "ISU Research Park"   ? '#e0f3db' :
+                                    '#f7fcf0';
 }
           // This is where I start to determine how my map will be colored
 function style(feature) {
@@ -139,9 +139,9 @@ function highlightFeature(e) {
 }  
      
     
-    // this function reset the polygone when the cursor is no longer hovering
+    // this function reset the polygons when the cursor is no longer hovering
 function resetHighlight(e) {
-   myStatesLayer.resetStyle(e.target);
+   myFarmsLayer.resetStyle(e.target);
    info.update();
 } 
           
@@ -149,13 +149,13 @@ function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
 }
           
- function onEachFeature(feature, layer) {
+function onEachFeature(feature, layer) {
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
         click: zoomToFeature
     });
-}         
+}          
           
               
           // Natural Areas JS
@@ -172,7 +172,7 @@ var NaturalAreaPoints = L.geoJSON(myNaturalAreas, {
 MyMarkers.addLayer(NaturalAreaPoints);
           
           
-map.addLayer(MyMarkers);
+
 //create the map, this is where I lay out the overlay and what is added to the map. 
     
 		//layer control
@@ -203,7 +203,7 @@ info.onAdd = function (map) {
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
     this._div.innerHTML = '<h4>ISU Research Farm Area</h4>' +  (props ?
-        '<b>' + props.Farm_Name_ + '</b><br />' + props.Shape_Area + 'ft<sup>2</sup>'
+        '<b>' + props.Farm_Name_1 + '</b><br />' + props.UnitManager + '</b><br />' + props.ManagerEmail
         : 'Hover over a farm');
 };
 
