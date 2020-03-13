@@ -100,7 +100,7 @@ var map = L.map('map', {
 // Overlay layers, this is where i will define my points and farms layers. I will also incorporate any functions for choropleth mapping, heat or cluster markers. 
 
           // farms JS         
-//function getColor(d) {
+function getColor(d) {
     return d > 1000000 ? '#08589e' :
            d > 800000  ? '#2b8cbe' :
            d > 600000  ? '#4eb3d3' :
@@ -111,7 +111,7 @@ var map = L.map('map', {
                         '#f7fcf0';
 }
           // This is where I start to determine how my map will be colored
-//function style(feature) {
+function style(feature) {
     return {
         fillColor: getColor(feature.properties.Shape_Area),
         weight: 2,
@@ -122,10 +122,10 @@ var map = L.map('map', {
     };
 }
           // this function allows me to hover over a polygon and get a result
-//function highlightFeature(e) {
-    //var layer = e.target;
+function highlightFeature(e) {
+    var layer = e.target;
 
-    //layer.setStyle({
+    layer.setStyle({
         weight: 5,
         color: '#666',
         dashArray: '',
