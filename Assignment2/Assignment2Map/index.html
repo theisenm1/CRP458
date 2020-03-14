@@ -99,6 +99,10 @@
       
 <div id="map"></div>
       
+        <button id="DairyBtn">Dairy farm Saturated Buffer</button>
+        
+        <button id="BurkeyBtn">Burkey Farm Satuted Buffer</button>
+      
       <script>
              
 //Base Layers, this is where I added in baselayers that I want to use as imagery
@@ -267,7 +271,21 @@ myLegend.onAdd = function (map) {
           
 
 myLegend.addTo(map);
+          
+          //This is my function to set me Dairy farm button
+document.getElementById("DairyBtn").addEventListener("click", dairySaturatedBuffer);
 
+       
+    function dairySaturatedBuffer() {
+            map.setView(new L.LatLng(41.9671, -93.6647), 18);
+        }
+          //This is my function to set me Burkey farm button       
+document.getElementById("BurkeyBtn").addEventListener("click", burkeySaturatedBuffer);
+
+        
+    function burkeySaturatedBuffer() {
+            map.setView(new L.LatLng(42.0106, -93.7926), 18);
+        }
 
       </script>
 
