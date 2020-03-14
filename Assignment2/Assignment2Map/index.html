@@ -61,7 +61,19 @@
     float: left;
     margin-right: 8px;
     opacity: 0.85;
-}          
+} 
+          
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}         
                         
       </style>
 	  	
@@ -71,7 +83,6 @@
     
     <div class="navbar">
             <a href="https://theisenm1.github.io/CRP458/">Home</a>
-            <a href="#news">News</a>
             <div class="dropdown">
             <button class="dropbtn">Exercises and Assignments 
                 <i class="fa fa-caret-down"></i>
@@ -97,11 +108,14 @@
       
          <h1 id="h1"><strong>ISU Research Farms Map</strong></h1>
       
-<div id="map"></div>
+<div id="map"></div> <br>
       
-        <button id="DairyBtn">Dairy farm Saturated Buffer</button>
-        
-        <button id="BurkeyBtn">Burkey Farm Satuted Buffer</button>
+      <div class="btn-group">
+        <button class="button">Boyd Farm Satuted Buffer</button>
+        <button class="button">Burkey Farm Satuted Buffer</button>
+        <button class="button">Dairy farm Saturated Buffer</button>
+        <button class="button">Uthe Farm Satuted Buffer</button>
+      </div>
       
       <script>
              
@@ -272,19 +286,36 @@ myLegend.onAdd = function (map) {
 
 myLegend.addTo(map);
           
-          //This is my function to set me Dairy farm button
-document.getElementById("DairyBtn").addEventListener("click", dairySaturatedBuffer);
+        //This is my function to set me Boyd farm button       
+document.getElementById("BoydBtn").addEventListener("click", boydSaturatedBuffer);
 
-       
-    function dairySaturatedBuffer() {
-            map.setView(new L.LatLng(41.9671, -93.6647), 18);
+        
+    function boydSaturatedBuffer() {
+            map.setView(new L.LatLng(42.0066, -93.7890), 18);
         }
+          
           //This is my function to set me Burkey farm button       
 document.getElementById("BurkeyBtn").addEventListener("click", burkeySaturatedBuffer);
 
         
     function burkeySaturatedBuffer() {
             map.setView(new L.LatLng(42.0106, -93.7926), 18);
+        }
+          
+           //This is my function to set me Dairy farm button
+document.getElementById("DairyBtn").addEventListener("click", dairySaturatedBuffer);
+
+       
+    function dairySaturatedBuffer() {
+            map.setView(new L.LatLng(41.9671, -93.6647), 18);
+        }
+          
+          //This is my function to set me Uthe farm button       
+document.getElementById("UtheBtn").addEventListener("click", utheSaturatedBuffer);
+
+        
+    function utheSaturatedBuffer() {
+            map.setView(new L.LatLng(41.9316, -93.7590), 18);
         }
 
       </script>
