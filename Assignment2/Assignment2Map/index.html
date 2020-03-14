@@ -111,12 +111,12 @@ var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 18
 });
-          
+   //This is my farms layer       
  var myFarmsLayer =  L.geoJson(myISUResearchFarms, {
     style: style,
     onEachFeature: onEachFeature
 });          
-          
+        // This is how I am adding the map and which layers are added on boot  
 var map = L.map('map', {
     center: new L.LatLng(42.0008, -93.7208),
     zoom: 11,
@@ -170,11 +170,11 @@ function resetHighlight(e) {
    myFarmsLayer.resetStyle(e.target);
    info.update();
 } 
-          
+          // if you click on a feature, it zooms to it 
 function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
 }
-          
+          // This function wraps together the highlight, reset, and zoom functions for each feature on the map.
 function onEachFeature(feature, layer) {
     layer.on({
         mouseover: highlightFeature,
@@ -194,7 +194,7 @@ var NaturalAreaPoints = L.geoJSON(myNaturalAreas, {
 });
           
           
-
+// This is adding my points to the map but 
 MyMarkers.addLayer(NaturalAreaPoints);
           
           
@@ -207,13 +207,13 @@ MyMarkers.addLayer(NaturalAreaPoints);
             "OpenStreetMap": OSM
             
 		};
-       		
+       		//This is where I show what layers I can turn on or off
 		var overlayMaps = {
         "ISU Research Farms": myFarmsLayer,    
         "Natural Areas": MyMarkers
 		};
   
- 
+ // This is where the layers are added to the map in the overlay
           L.control.layers(baseMaps, overlayMaps).addTo(map);        
           
 // US Population Density Layer
@@ -234,7 +234,7 @@ info.update = function (props) {
 };
 
 info.addTo(map);
-          
+          // this is where I tell my legends to turn on or off depending on if the layer is open or not 
 map.on('overlayadd', function(eventLayer){
     if (eventLayer.name === 'ISU Research Farms'){
         map.addControl(myLegend);
@@ -246,7 +246,7 @@ map.on('overlayremove', function(eventLayer){
          map.removeControl(myLegend);
     } 
 }); 
-          
+          // This is my legend for the ISU Research Farms layer
 var myLegend = L.control({position: 'bottomright'});
 
 myLegend.onAdd = function (map) {
@@ -272,8 +272,7 @@ myLegend.addTo(map);
       </script>
 
  <footer id="feet">
-         Matt Theisen March 13th, 2020 <br>
-         Image obtained from 
+         Matt Theisen March 13th, 2020 <br> 
         </footer>     
   </body>
 </html>
