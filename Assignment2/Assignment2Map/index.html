@@ -189,7 +189,7 @@ var MyMarkers = L.markerClusterGroup();
           
 var NaturalAreaPoints = L.geoJSON(myNaturalAreas, {
                onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.LandUseLan);
+                layer.bindPopup(feature.properties.LandUseLandCover + '</b><br />' + feature.properties.FarmName);
     }                  
 });
           
@@ -273,6 +273,7 @@ myLegend.addTo(map);
 
  <footer id="feet">
          Matt Theisen March 13th, 2020 <br>
+     Sources: Baselayers, <a id="SecondLink"; href="https://leaflet-extras.github.io/leaflet-providers/preview/" title="Leaflet-Providers" color="green" target="blank">Leaflet-Providers</a>  Natural Areas and ISU Research Farms, hand digitized and exported from personal Geodatabase <br>
     <a id="SecondLink"; href="https://github.com/theisenm1/CRP458" title="My Github" color="green" target="blank">GitHub</a> 
         </footer>     
   </body>
