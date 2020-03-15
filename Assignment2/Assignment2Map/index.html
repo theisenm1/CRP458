@@ -63,7 +63,7 @@
     opacity: 0.85;
 } 
           /* This is my CSS for my buttons*/
-.button {
+#BoydBtn {
   background-color: #005824;
   border: none;
   color: black;
@@ -73,7 +73,44 @@
   font-size: 14px;
   margin: 4px 2px;
   cursor: pointer;
-}         
+}
+          
+#BurkeyBtn {
+  background-color: #005824;
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+} 
+          
+#DairyBtn {
+  background-color: #005824;
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+} 
+          
+#UtheBtn {
+  background-color: #005824;
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+}           
+          
                         
       </style>
 	  	
@@ -95,10 +132,10 @@
 <div id="map"></div> <br>
       
       <div class="btn-group">
-        <button class="button">Boyd Farm Satuted Buffer</button>
-        <button class="button">Burkey Farm Satuted Buffer</button>
-        <button class="button">Dairy farm Saturated Buffer</button>
-        <button class="button">Uthe Farm Satuted Buffer</button>
+        <button id="BoydBtn">Boyd Farm Satuted Buffer</button>
+        <button id="BurkeyBtn">Burkey Farm Satuted Buffer</button>
+        <button id="DairyBtn">Dairy farm Saturated Buffer</button>
+        <button id="UtheBtn">Uthe Farm Satuted Buffer</button>
       </div>
       
       <script>
@@ -138,6 +175,18 @@ function getColor(d) {
            d >  10000   ? '#e0f3db' :
                           '#f7fcf0';
 }
+          
+//function getColor(d) {
+    //return d ==  "Affiliate Farms"   ? '#2ca25f' :
+           //d ==  "Research Farms"    ? '#cb181d' :
+           //d ==  "Teaching Farms"    ? '#8dd3c7' :
+           //d ==  "LAR Farm"          ? '#fed976' :
+           //d ==  "ISU Campus"        ? '#034e7b' :
+           //d ==  "Leased"            ? '#ccebc5' :
+           //d ==  "ISU Research Park" ? '#8856a7' :
+           //d ==  "Nature Center"     ? '#e7298a' :
+                                     //'#f7fcf0';
+//}          
           // This is where I start to determine how my map will be colored
 function style(feature) {
     return {
