@@ -165,7 +165,7 @@ var map = L.map('map', {
 // Overlay layers, this is where i will define my points and farms layers. I will also incorporate any functions for choropleth mapping, heat or cluster markers. 
 
           // farms JS         
-/*function getColor(d) {
+function getColor(d) {
     return d >  800000  ? '#08589e' :
            d >  500000  ? '#2b8cbe' :
            d >  300000  ? '#4eb3d3' :
@@ -174,9 +174,9 @@ var map = L.map('map', {
            d >  25000   ? '#ccebc5' :
            d >  10000   ? '#e0f3db' :
                           '#f7fcf0';
-}*/
-          
-function getColor(d) {
+}
+          // This is my function to get my features to be labeled as farm types
+/*function getColor(d) {
     return d ==  "Affiliate Farms"   ? '#2ca25f' :
            d ==  "Research Farms"    ? '#cb181d' :
            d ==  "Teaching Farms"    ? '#8dd3c7' :
@@ -186,11 +186,11 @@ function getColor(d) {
            d ==  "ISU Research Park" ? '#8856a7' :
            d ==  "Nature Center"     ? '#e7298a' :
                                      '#f7fcf0';
-}          
+}*/          
           // This is where I start to determine how my map will be colored
 function style(feature) {
     return {
-        fillColor: getColor(feature.properties.Farm_Type_1),
+        fillColor: getColor(feature.properties.Shape_Area),
         weight: 2,
         opacity: 2.5,
         color: 'white',
@@ -299,21 +299,26 @@ map.on('overlayremove', function(eventLayer){
 }); 
           // This is my legend for the ISU Research Farms layer
 var myLegend = L.control({position: 'bottomright'});
-        
 
 myLegend.onAdd = function (map) {
 
     var myDiv = L.DomUtil.create('myDiv', 'info myLegend'),
-        grades = [],
-        labels = [Nature Center, ISU Research Park, Leased, ISU Campus, LAR Farm, Teaching Farms, Research Farms, Affiliate Farms];
+        grades = [0, 10000, 25000, 50000, 100000, 300000, 500000, 800000],
+        labels = ['<strong> Farm Area sq feet</strong>'],
+         from, to;
 
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        myDiv.innerHTML += 
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
+    // loop through our area intervals and generate a label with a colored square for each interval while also adding a legend title
+  
+        for (var i = 0; i < grades.length; i++) {
+        from = grades [i];
+        to = grades[i+1]-1;
 
+    labels.push(
+        '<i style="background:' + getColor(from + 1) + '"></i> ' +
+        from + (to ? '&ndash;' + to : '+'));
+        } 
+    
+     myDiv.innerHTML = labels.join('<br>');   
     return myDiv;
 };          
           
