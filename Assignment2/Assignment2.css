@@ -150,3 +150,90 @@
     #me {
      font-size: 0.9em;
 }
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #525252;
+}
+       /*This is my CSS for my legend specifically. */   
+.legend {
+    line-height: 20px;
+    color: #555;
+    background-color: wheat
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.85;
+}
+
+.myLegend {
+    line-height: 20px;
+    color: #555;
+    background-color: wheat
+}
+.myLegend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.85;
+} 
+          /* This is my CSS for my buttons*/
+#BoydBtn {
+  background-color: #005824;
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+          
+#BurkeyBtn {
+  background-color: #005824;
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+} 
+          
+#DairyBtn {
+  background-color: #005824;
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+} 
+          
+#UtheBtn {
+  background-color: #005824;
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+} 
