@@ -151,6 +151,8 @@
      font-size: 0.9em;
 }
 
+     /* These are my style changes specific to this page. There is much more CSS in my Assignment 2 css file. */   
+
 .info {
     padding: 6px 8px;
     font: 14px/16px Arial, Helvetica, sans-serif;
@@ -237,3 +239,7 @@
   margin: 4px 2px;
   cursor: pointer;
 } 
+#farmManager {
+    text-align: center;
+    font-size: 1em;
+}
