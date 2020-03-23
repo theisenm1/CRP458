@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>ISU Research Farms</title>
+      
+       <meta name="description" content="LA 458/558 15a Leaflet with layer control - 2020" />
+      
+      <link href="../final_project/finalProjectCSS.css" rel="stylesheet" type="text/css">
+	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> 
+	  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+      
+      
+      <link rel="stylesheet" href="https://theisenm1.github.io/CRP458/Assignment2/cluster_files_dist/MarkerCluster.css" />
+      <link rel="stylesheet" href="https://theisenm1.github.io/CRP458/Assignment2/cluster_files_dist/MarkerCluster.Default.css" />
+      <script src="https://theisenm1.github.io/CRP458/Assignment2/cluster_files_dist/leaflet.markercluster-src.js"></script>
+      
+      <script src="../../geojson/ISU_Research_Farms.geojson"></script>
+      <script src="../../geojson/Natural_Areas.geojson"></script>
+      
+      <style>
+      html, body, 
+
+          #map { height: 700px; margin: 0 auto; padding: 0; 
+          z-index:999;
+          } 
+     /* These are my style changes specific to this page. There is much more CSS in my Assignment 2 css file. */     
+                               
+      </style>
+	  	
+  </head>
+    
+  <body>
+    
+    <div class="navbar">
+            <a href="https://theisenm1.github.io/CRP458/">Home</a>
+            <a href="https://theisenm1.github.io/CRP458/Assignment2/" target="blank">Project Description</a>
+            <div class="dropdown">
+  
+                 
+        </div> 
+    </div> 
+      
+         <h1 id="h1"><strong>ISU Research Farms Map</strong></h1>
+      
+      <h2 id="farmManager"><strong>You <b>Must</b> contact farm manager before planning a trip to a site</strong></h2>
+      
+<div id="map"></div> <br>
+      
+      <div class="btn-group">
+        <button id="BoydBtn">Boyd Farm Saturated Buffer</button>
+        <button id="BurkeyBtn">Burkey Farm Saturated Buffer</button>
+        <button id="DairyBtn">Dairy farm Saturated Buffer</button>
+        <button id="UtheBtn">Uthe Farm Saturated Buffer</button>
+      </div>
+      
+      <script>
+             
+//Base Layers, this is where I added in baselayers that I want to use as imagery
+
+var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+          
+var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18
+});
+   //This is my farms layer       
+ var myFarmsLayer =  L.geoJson(myISUResearchFarms, {
+    style: style,
+    onEachFeature: onEachFeature
+});          
+        // This is how I am adding the map and which layers are added on boot  
+var map = L.map('map', {
+    center: new L.LatLng(42.0008, -93.7208),
+    zoom: 11,
+    layers: [Esri_WorldImagery, myFarmsLayer]
+});          
+
+// Overlay layers, this is where i will define my points and farms layers. I will also incorporate any functions for choropleth mapping, heat or cluster markers. 
+
+          // farms JS         
+function getColor(d) {
+    return d >  800000  ? '#08589e' :
+           d >  500000  ? '#2b8cbe' :
+           d >  300000  ? '#4eb3d3' :
+           d >  100000  ? '#7bccc4' :
+           d >  50000   ? '#a8ddb5' :
+           d >  25000   ? '#ccebc5' :
+           d >  10000   ? '#e0f3db' :
+                          '#f7fcf0';
+}
+          // This is my function to get my features to be labeled as farm types
+/*function getColor(d) {
+    return d ==  "Affiliate Farms"   ? '#2ca25f' :
+           d ==  "Research Farms"    ? '#cb181d' :
+           d ==  "Teaching Farms"    ? '#8dd3c7' :
+           d ==  "LAR Farm"          ? '#fed976' :
+           d ==  "ISU Campus"        ? '#034e7b' :
+           d ==  "Leased"            ? '#ccebc5' :
+           d ==  "ISU Research Park" ? '#8856a7' :
+           d ==  "Nature Center"     ? '#e7298a' :
+                                     '#f7fcf0';
+}*/          
+          // This is where I start to determine how my map will be colored
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.Shape_Area),
+        weight: 2,
+        opacity: 2.5,
+        color: 'white',
+        dashArray: '1',
+        fillOpacity: 0.75
+    };
+}
+          // this function allows me to hover over a polygon and get a result
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+    
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+  info.update(layer.feature.properties);  
+}  
+     
+    
+    // this function reset the polygons when the cursor is no longer hovering
+function resetHighlight(e) {
+   myFarmsLayer.resetStyle(e.target);
+   info.update();
+} 
+          // if you click on a feature, it zooms to it 
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}
+          // This function wraps together the highlight, reset, and zoom functions for each feature on the map.
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+}          
+          
+              
+          // Natural Areas JS
+var MyMarkers = L.markerClusterGroup();
+          
+var NaturalAreaPoints = L.geoJSON(myNaturalAreas, {
+               onEachFeature: function (feature, layer) {
+                layer.bindPopup(feature.properties.LandUseLandCover + '</b><br />' + feature.properties.FarmName);
+    }                  
+});
+          
+          
+// This is adding my points to the map but 
+MyMarkers.addLayer(NaturalAreaPoints);
+          
+          
+
+//create the map, this is where I lay out the overlay and what is added to the map. 
+    
+		//layer control
+		var baseMaps = {
+            "Esri World Imagery": Esri_WorldImagery,
+            "OpenStreetMap": OSM
+            
+		};
+       		//This is where I show what layers I can turn on or off
+		var overlayMaps = {
+        "ISU Research Farms": myFarmsLayer,    
+        "Natural Areas": MyMarkers
+		};
+  
+ // This is where the layers are added to the map in the overlay
+          L.control.layers(baseMaps, overlayMaps).addTo(map);        
+          
+// US Population Density Layer
+          
+var info = L.control();
+          
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>ISU Research Farm Contacts</h4>' +  (props ?
+        '<b>' + props.Farm_Name_1 + '</b><br />' + props.UnitManager + '</b><br />' + props.ManagerEmail
+        : 'Hover over a farm');
+};
+
+info.addTo(map);
+          // this is where I tell my legends to turn on or off depending on if the layer is open or not 
+map.on('overlayadd', function(eventLayer){
+    if (eventLayer.name === 'ISU Research Farms'){
+        map.addControl(myLegend);
+    } 
+});
+
+map.on('overlayremove', function(eventLayer){
+    if (eventLayer.name === 'ISU Research Farms'){
+         map.removeControl(myLegend);
+    } 
+}); 
+          // This is my legend for the ISU Research Farms layer
+var myLegend = L.control({position: 'bottomright'});
+
+myLegend.onAdd = function (map) {
+
+    var myDiv = L.DomUtil.create('myDiv', 'info myLegend'),
+        grades = [0, 10000, 25000, 50000, 100000, 300000, 500000, 800000],
+        labels = ['<strong> Farm Area sq feet</strong>'],
+         from, to;
+
+    // loop through our area intervals and generate a label with a colored square for each interval while also adding a legend title
+  
+        for (var i = 0; i < grades.length; i++) {
+        from = grades [i];
+        to = grades[i+1]-1;
+
+    labels.push(
+        '<i style="background:' + getColor(from + 1) + '"></i> ' +
+        from + (to ? '&ndash;' + to : '+'));
+        } 
+    
+     myDiv.innerHTML = labels.join('<br>');   
+    return myDiv;
+};          
+          
+
+myLegend.addTo(map);
+          
+        //This is my function to set me Boyd farm button       
+document.getElementById("BoydBtn").addEventListener("click", boydSaturatedBuffer);
+
+        
+    function boydSaturatedBuffer() {
+            map.setView(new L.LatLng(42.0066, -93.7890), 18);
+        }
+          
+          //This is my function to set me Burkey farm button       
+document.getElementById("BurkeyBtn").addEventListener("click", burkeySaturatedBuffer);
+
+        
+    function burkeySaturatedBuffer() {
+            map.setView(new L.LatLng(42.0106, -93.7926), 18);
+        }
+          
+           //This is my function to set me Dairy farm button
+document.getElementById("DairyBtn").addEventListener("click", dairySaturatedBuffer);
+
+       
+    function dairySaturatedBuffer() {
+            map.setView(new L.LatLng(41.9671, -93.6647), 18);
+        }
+          
+          //This is my function to set me Uthe farm button       
+document.getElementById("UtheBtn").addEventListener("click", utheSaturatedBuffer);
+
+        
+    function utheSaturatedBuffer() {
+            map.setView(new L.LatLng(41.9316, -93.7590), 18);
+        }
+
+      </script>
+
+ <footer id="feet">
+         Matt Theisen March 15th, 2020 <br>
+     Sources: Baselayers, <a id="SecondLink"; href="https://leaflet-extras.github.io/leaflet-providers/preview/" title="Leaflet-Providers" color="green" target="blank">Leaflet-Providers</a>  Natural Areas and ISU Research Farms, hand digitized and exported from personal Geodatabase <br>
+    <a id="SecondLink"; href="https://github.com/theisenm1/CRP458" title="My Github" color="green" target="blank">GitHub</a> 
+        </footer>     
+  </body>
+</html>
+    
