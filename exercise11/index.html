@@ -5,19 +5,18 @@
       
 <meta name="description" content="LA 458/558 15a Leaflet with layer control - 2020" />
       
-      <link href="../Assignment1.css" rel="stylesheet" type="text/css">
-	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> 
-	  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-      
-      <script src="../geojson/map.geojson"></script>
-      <script src="../geojson/Ecosytem_Restoration_Projects.geojson"></script> 
-      <script src="../geojson/route.geojson"></script> 
-      <script src="../geojson/neverbeen.geojson"></script>
+ <link href="../Assignment1.css" rel="stylesheet" type="text/css">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> 
+	  
+ <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    
+ <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
       
       <style>
-      html, body, 
-
-          #map { height: 700px; margin: 0 auto; padding: 0; 
+      html, body, #map { 
+          height: 700px; 
+          margin: 0 auto; 
+          padding: 0; 
           z-index:999;
           }  
       </style>
@@ -76,7 +75,12 @@ var ortho_2016_2018_nc = L.tileLayer.wms("https://athene.gis.iastate.edu/arcgis/
     format: 'image/png',
     transparent: true,
     attribution: "Iowa State University GIS Facility &copy; 2020, Iowa Homeland Security & Emergency Management 2016"
-		});          
+		});
+          
+var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});          
 
 // Overlay layers
 var myStyle = {
@@ -91,34 +95,33 @@ var myNewStyle = {
     "opacity": 1,
 }; 
 
+          
+//esri.leaflet JS
+          
+
+          
+          
 var map = L.map('map', {
     center: new L.LatLng(42.0908, -93.6208),
-    zoom: 10,
+    zoom: 7,
     layers: [naip_2019_nc]
 });    
+              
+var nationalParks = L.esri.featureLayer({ 
+    url: 
+    "https://services1.arcgis.com/fBc8EJBxQRMcHlei/ArcGIS/rest/services/NPS_Park_Boundaries/FeatureServer/0", 
+style: function (feature) { 
+    return { color: "#70ca49", weight: 5 }; 
+    }
+});
           
-var myPlacesLayer = L.geoJSON(places, {
-    onEachFeature: function (feature, layer) {
-        layer.bindPopup('<h1>'+feature.properties.state+'</h1><p>coordinates: '+feature.geometry.coordinates+'</p>')
+var iowaLandCover = L.esri.featureLayer({ 
+    url: 
+    "https://programs.iowadnr.gov/geospatial/rest/services/SurfaceWaters/FloodHazardAreas/MapServer/1", 
+style: function (feature) { 
+    return { color: "#70ca49", weight: 5 }; 
     }
-})
-        
-var myEcosystemLayer = L.geoJSON(ecosystem, {
-    onEachFeature: function (feature, layer) {
-        layer.bindPopup('<h1>'+feature.properties.SDSFEATURENAME+'</h1><p>Description: '+feature.properties.SDSFEATUREDESCRIPTION+'</p>')
-    }
-})
-        
-var myRouteLayer = L.geoJSON(route, {
-                    style: myStyle,
-                })
-         
-var myNeverBeenLayer = L.geoJSON(neverBeen, {
-                    style: myNewStyle,
-                })          
-
-//------ Vector and Marker Layers stuff
-
+});
 
 
 //create the map
@@ -127,15 +130,15 @@ var myNeverBeenLayer = L.geoJSON(neverBeen, {
 		var baseMaps = {
             "NAIP 2019 Natural Color Imagery": naip_2019_nc,
             "2016_2018 Natural Color Ortho Imagery": ortho_2016_2018_nc,
+            "OpenTopoMap": OpenTopoMap
             
 		};
        		
 		var overlayMaps = {
-        "": ,    
-		"": ,
-        "": ,
+        "2016_2018 Natural Color Ortho Imagery": ortho_2016_2018_nc,    
             
 		};
+          
   			
           L.control.layers(baseMaps, overlayMaps).addTo(map);
 </script>

@@ -163,8 +163,13 @@ var NaturalAreaPoints = L.geoJSON(myNaturalAreas, {
 // This is adding my points to the map but 
 MyMarkers.addLayer(NaturalAreaPoints);
           
-          
-
+ // esri.leaflet plugin          
+var nationalParks = L.esri.featureLayer({ 
+    url: 
+    "https://services1.arcgis.com/fBc8EJBxQRMcHlei/ArcGIS/rest/services/NPS_Park_Boundaries/FeatureServer/0", 
+style: function () { 
+    return { color: "#70ca49", weight: 5 }; }
+}).addTo(map);
 //create the map, this is where I lay out the overlay and what is added to the map. 
     
 		//layer control
