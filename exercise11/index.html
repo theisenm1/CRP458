@@ -106,15 +106,35 @@ var iowaLandForms = L.esri.featureLayer({
     url: 
     "https://programs.iowadnr.gov/geospatial/rest/services/Geology/Landforms/MapServer/9", 
 style: function (feature) { 
-    return { color: "#de2d26", weight: 4 }; 
-    }
+        if (feature.properties.LANDFORM_R === 'Des Moines Lobe') {
+        return { color: "#70ca49", weight: 3 };
+      } else if (feature.properties.LANDFORM_R === 'East-Central Iowa Drift Plain') {
+        return {color: "#fc9272", weight: 3 } 
+      } else if (feature.properties.LANDFORM_R === 'Iowa-Cedar Lowland') {
+        return {color: "#3f007d", weight: 3 }
+    } else if (feature.properties.LANDFORM_R === 'Iowan Surface') {
+        return {color: "#d94801", weight: 3 }
+    } else if (feature.properties.LANDFORM_R === 'Loess Hills') {
+        return {color: "#081d58", weight: 3 }
+      } else if (feature.properties.LANDFORM_R === 'Mississippi River Alluvial Plain') {
+        return {color: "#004529", weight: 3 }
+      } else if (feature.properties.LANDFORM_R === 'Missouri River Alluvial Plain') {
+        return {color: "#fdbb84", weight: 3 }
+      }  else if (feature.properties.LANDFORM_R === 'Northwest Iowa Plains') {
+        return {color: "#f768a1", weight: 3 }
+      } else if (feature.properties.LANDFORM_R === 'Paleozoic Plateau') {
+        return {color: "#8c510a", weight: 3 }
+      } else if (feature.properties.LANDFORM_R === 'Southern Iowa Drift Plain') {
+        return {color: "#35978f", weight: 3 }
+      }
+   }
 });
           
 var iowaWatersheds = L.esri.featureLayer({ 
     url: 
     "https://programs.iowadnr.gov/geospatial/rest/services/Watersheds/Watersheds/MapServer/3", 
-style: function () { 
-    return { color: "#70ca49", weight: 3 }; 
+style: function () {
+  return { color: "#70ca49", weight: 3 };
     }
 });
 
