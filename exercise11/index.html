@@ -77,31 +77,15 @@ var ortho_2016_2018_nc = L.tileLayer.wms("https://athene.gis.iastate.edu/arcgis/
     attribution: "Iowa State University GIS Facility &copy; 2020, Iowa Homeland Security & Emergency Management 2016"
 		});          
 
-// Overlay layers
-var myStyle = {
-    "color": "#EB1F69",
-    "weight": 5,
-    "opacity": 0.65,
-};
-          
-var myNewStyle = {
-    "color": "#111206",
-    "weight": 5,
-    "opacity": 1,
-}; 
-
-          
-//esri.leaflet JS
-          
-
-          
+// Overlay layers        
           
 var map = L.map('map', {
     center: new L.LatLng(42.0908, -93.6208),
     zoom: 7,
     layers: [naip_2019_nc]
 });    
-              
+       
+          // esri.leaflet plugin in data and colors
 var iowaLandForms = L.esri.featureLayer({ 
     url: 
     "https://programs.iowadnr.gov/geospatial/rest/services/Geology/Landforms/MapServer/9", 
@@ -130,15 +114,9 @@ style: function (feature) {
    }
 });
           
-var iowaWatersheds = L.esri.featureLayer({ 
-    url: 
-    "https://programs.iowadnr.gov/geospatial/rest/services/Watersheds/Watersheds/MapServer/3", 
-style: function () {
-  return { color: "#70ca49", weight: 3 };
-    }
-});
-
-
+  iowaLandForms.bindPopup(function (layer) {
+      return L.Util.template('<p>This is the <strong>{LANDFORM_R}</strong> region.</p>', layer.feature.properties);
+  });    
 //create the map
     
 		//layer control
@@ -149,8 +127,7 @@ style: function () {
 		};
        		
 		var overlayMaps = {
-        "HUC 08 Watersheds of Iowa": iowaWatersheds,
-        "Iowa Land Forms": iowaLandForms    
+        "Iowa Land Forms": iowaLandForms,    
             
 		};
           
