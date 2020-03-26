@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Exercise 8 geoJSON Leaflet Map</title>
+      
+<meta name="description" content="LA 458/558 15a Leaflet with layer control - 2020" />
+      
+      <link href="../Assignment1.css" rel="stylesheet" type="text/css">
+	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> 
+	  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+      
+      <script src="../geojson/map.geojson"></script>
+      <script src="../geojson/Ecosytem_Restoration_Projects.geojson"></script> 
+      <script src="../geojson/route.geojson"></script> 
+      <script src="../geojson/neverbeen.geojson"></script>
+      
+      <style>
+      html, body, 
+
+          #map { height: 700px; margin: 0 auto; padding: 0; 
+          z-index:999;
+          }  
+      </style>
+	  	
+  </head>
+    
+  <body>
+    
+    <div class="navbar">
+            <a href="https://theisenm1.github.io/CRP458/">Home</a>
+              <a href="https://theisenm1.github.io/CRP458/Assignment2/" target="blank">Projects</a>
+            <div class="dropdown">
+            <button class="dropbtn">Exercises and Assignments 
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+            <a href="https://theisenm1.github.io/CRP458/exercise1/">About Me</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise2/">Exercise 2</a>
+            <a href="https://github.com/theisenm1/CRP458/blob/master/exercise3/GeoJSON%20Ag%20Drainage%20Wells.geojson" target="_blank">Exercise 3</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise4/#11/42.7354/-93.6791">Exercise 4</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise5/">Exercise 5</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise6/">Exercise 6</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise7/">Exercise 7</a>   
+            <a href="https://theisenm1.github.io/CRP458/exercise8/">Exercise 8</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise9/">Exercise 9</a>
+            <a href="https://theisenm1.github.io/CRP458/exercise10/">Exercise 10</a>    
+            <a href="https://theisenm1.github.io/CRP458/Assignment1/">Assignment 1</a>
+    
+                 
+            </div>
+        </div> 
+    </div> 
+      
+         <h1 id="h1"><strong>geoJSON leaflet Map</strong></h1>
+      
+<div id="map"></div>
+      
+      <script>
+          
+
+      console.clear();
+          
+      
+
+//Base Layers
+          
+var naip_2019_nc = L.tileLayer.wms("https://athene.gis.iastate.edu/arcgis/services/ortho/naip_2019_nc/ImageServer/WMSServer", {
+    layers: 'naip_2019_nc',
+    format: 'image/png',
+    transparent: true,
+    attribution: "Iowa State University GIS Facility &copy; 2020, USDA National Agriculture Imagery Program 2019"
+		});
+		
+var ortho_2016_2018_nc = L.tileLayer.wms("https://athene.gis.iastate.edu/arcgis/services/ortho/ortho_2016_2018_nc/ImageServer/WMSServer", {
+    layers: 'ortho_2016_2018_nc',
+    format: 'image/png',
+    transparent: true,
+    attribution: "Iowa State University GIS Facility &copy; 2020, Iowa Homeland Security & Emergency Management 2016"
+		});          
+
+// Overlay layers
+var myStyle = {
+    "color": "#EB1F69",
+    "weight": 5,
+    "opacity": 0.65,
+};
+          
+var myNewStyle = {
+    "color": "#111206",
+    "weight": 5,
+    "opacity": 1,
+}; 
+
+var map = L.map('map', {
+    center: new L.LatLng(42.0908, -93.6208),
+    zoom: 10,
+    layers: [naip_2019_nc]
+});    
+          
+var myPlacesLayer = L.geoJSON(places, {
+    onEachFeature: function (feature, layer) {
+        layer.bindPopup('<h1>'+feature.properties.state+'</h1><p>coordinates: '+feature.geometry.coordinates+'</p>')
+    }
+})
+        
+var myEcosystemLayer = L.geoJSON(ecosystem, {
+    onEachFeature: function (feature, layer) {
+        layer.bindPopup('<h1>'+feature.properties.SDSFEATURENAME+'</h1><p>Description: '+feature.properties.SDSFEATUREDESCRIPTION+'</p>')
+    }
+})
+        
+var myRouteLayer = L.geoJSON(route, {
+                    style: myStyle,
+                })
+         
+var myNeverBeenLayer = L.geoJSON(neverBeen, {
+                    style: myNewStyle,
+                })          
+
+//------ Vector and Marker Layers stuff
+
+
+
+//create the map
+    
+		//layer control
+		var baseMaps = {
+            "NAIP 2019 Natural Color Imagery": naip_2019_nc,
+            "2016_2018 Natural Color Ortho Imagery": ortho_2016_2018_nc,
+            
+		};
+       		
+		var overlayMaps = {
+        "Places I have Lived": myPlacesLayer,    
+		"Ecosystem Project Locations": myEcosystemLayer,
+        "My Route": myRouteLayer,
+        "Places I have never been": myNeverBeenLayer 
+            
+		};
+  			
+          L.control.layers(baseMaps, overlayMaps).addTo(map);
+</script>
+      
+  </body>
+</html>
+    
