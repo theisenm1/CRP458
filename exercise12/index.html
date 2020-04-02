@@ -53,7 +53,7 @@
       
          <h1 id="h1"><strong>Mapbox Leaflet Map</strong></h1>
       
-      <p><a id="SecondLink"; href="https://geospatial-usace.opendata.arcgis.com/datasets/fec7341a4b2b4e43bc1f6258057fd115_4" title="Mapbox" color="green" target="blank">Mapbox</a></p>
+      <p> Below is a leaflet map containing a customized mapbox basemap. I constructed this through mapboxstudio. Before I brought in new layers, I removed a few transit icons, changed "roads" colors, and changed "golf hole line" colors. I decided to add a terrain rgb DEM hillshade layer to show more elevation and global model. I also added an ecosystem restoration projects tilelayer, downloaded at the US Army Corps      <a id="SecondLink"; href="https://geospatial-usace.opendata.arcgis.com/datasets/fec7341a4b2b4e43bc1f6258057fd115_4" title="US Army Corps website" color="green" target="blank">website</a>. To top it off, I added in a historical </p>
       
 <div id="map"></div>
       
@@ -75,7 +75,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/theisenm/{id}/tiles/{z}/{x}/{y}?ac
           
 var map = L.map('map', {
     center: new L.LatLng(42.0908, -93.6208),
-    zoom: 7,
+    zoom: 4,
     layers: [Mapbox]
 });    
        
