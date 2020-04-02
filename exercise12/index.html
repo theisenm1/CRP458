@@ -59,8 +59,10 @@
       
       <script>
           
-
-      console.clear();
+    var map = L.map('map', {
+    center: new L.LatLng(42.0908, -93.6208),
+    zoom: 4,
+});       
           
 //Base Layers  specifically a new customized mapbox layer
 var Mapbox =           
@@ -70,26 +72,14 @@ L.tileLayer('https://api.mapbox.com/styles/v1/theisenm/{id}/tiles/{z}/{x}/{y}?ac
     id: 'ck8j5ebdw0anm1jp3yx71q2d0',
 
     accessToken: 'pk.eyJ1IjoidGhlaXNlbm0iLCJhIjoiY2s2azJqenhvMDJnMzNzcXBuaXF0Y29xayJ9.8TLNb5gvHvrdXYAD64tTEQ' 
-});          
-           
-          
-var map = L.map('map', {
-    center: new L.LatLng(42.0908, -93.6208),
-    zoom: 4,
-    layers: [Mapbox]
-});    
+}).addTo(map);          
+             
        
           // esri.leaflet plugin in data and colors
     
 //create the map
     
-		//layer control
-		var baseMaps = {
-            "Mapbox Terrain Map": Mapbox
-            
-		};
-  			
-          L.control.layers(baseMaps).addTo(map);
+
 </script>
    <footer id="feet">
          Matt Theisen April 2nd, 2020 <br>
