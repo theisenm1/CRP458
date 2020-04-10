@@ -6,14 +6,17 @@
        <meta name="description" content="LA 458/558 15a Leaflet with layer control - 2020" />
       
       <link href="../final_project/finalProjectCSS.css" rel="stylesheet" type="text/css">
-	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> 
-	  
-      <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/Leaflet.markercluster/dist/MarkerCluster.css" />
-      <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
-      <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
+	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
       
-      <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-      <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
+
+      
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
+      <link rel="stylesheet" href="https://theisenm1.github.io/CRP458/final_project/cluster_files_dist/MarkerCluster.css" />
+      <link rel="stylesheet" href="https://theisenm1.github.io/CRP458/final_project/cluster_files_dist/MarkerCluster.Default.css" />
+      <script src="https://theisenm1.github.io/CRP458/final_project/cluster_files_dist/leaflet.markercluster-src.js"></script>
+      
+    <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
           
        <script src="../geojson/National_Parks.geojson"></script>  
            
@@ -63,11 +66,18 @@ var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest
 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 });
           
-var OSM = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 18
-});      
+var Stamen_TonerHybrid = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-hybrid/{z}/{x}/{y}{r}.{ext}', {
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	subdomains: 'abcd',
+	minZoom: 0,
+	maxZoom: 20,
+	ext: 'png'
+}); 
           
+var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});      
         // This is how I am adding the map and which layers are added on boot  
 var map = L.map('map', {
     center: new L.LatLng(48.0008, -101.7208),
@@ -156,7 +166,7 @@ style: function () {
     return { color: "#70ca49", weight: 5 }; }
 }).addTo(map);*/
               
-var markers = L.markerClusterGroup();
+var myMarkers = L.markerClusterGroup();
           
     var nationalParkPoints = L.geoJSON(nationalParks, {
                onEachFeature: function (feature, layer) {
@@ -167,23 +177,26 @@ var markers = L.markerClusterGroup();
  myMarkers.addLayer(nationalParkPoints);
           
  // esri.leaflet plugin          
-/*var nationalParks = L.esri.featureLayer({ 
+var nationalForests = L.esri.featureLayer({ 
     url: 
-    "https://services1.arcgis.com/fBc8EJBxQRMcHlei/ArcGIS/rest/services/NPS_Park_Boundaries/FeatureServer/0", 
+    "https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/US_Forest_Service_Administrative_Forest_Boundaries/FeatureServer/0", 
 style: function () { 
-    return { color: "#70ca49", weight: 5 }; }
-}).addTo(map);*/
-//create the map, this is where I lay out the overlay and what is added to the map. 
+    return { color: "#006d2c", weight: 1 }; }
+})
+
+          //create the map, this is where I lay out the overlay and what is added to the map. 
     
 		//layer control
 		var baseMaps = {
             "Esri World Imagery": Esri_WorldImagery,
-            "OpenStreetMap": OSM
-            
+             "OpenTopoMap": OpenTopoMap,
+            "Stamen Toner Hybrid": Stamen_TonerHybrid
+           
 		};
        		//This is where I show what layers I can turn on or off
 		var overlayMaps = {
-            "National Parks":myMarkers
+            "National Parks": myMarkers,
+            "National Forests": nationalForests
 		};
   
  // This is where the layers are added to the map in the overlay
@@ -191,7 +204,7 @@ style: function () {
           
 // US Population Density Layer
           
-var info = L.control();
+/*var info = L.control();
           
 info.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
@@ -245,7 +258,7 @@ myLegend.onAdd = function (map) {
 };          
           
 
-myLegend.addTo(map);
+myLegend.addTo(map);*/
           
         //This is my function to set me Boyd farm button       
 document.getElementById("BoydBtn").addEventListener("click", boydSaturatedBuffer);
