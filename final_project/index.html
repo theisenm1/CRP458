@@ -47,8 +47,6 @@
       
          <h1 id="h1"><strong>ISU Research Farms Map</strong></h1>
       
-      <h2 id="farmManager"><strong>You <b>Must</b> contact farm manager before planning a trip to a site. </strong> <br> Please also see more information on farm security in the farms contents. </h2>
-      
 <div id="map"></div> <br>
       
       <div class="btn-group">
@@ -159,12 +157,12 @@ function onEachFeature(feature, layer) {
     });
 }*/          
 
-/*var stateParks = L.esri.featureLayer({ 
+var iowaStateParks = L.esri.featureLayer({ 
     url: 
-    "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Parks/FeatureServer", 
+    "https://services2.arcgis.com/r6iFVcMJeA4kB4GC/ArcGIS/rest/services/Parks_RecAreas_Forests_Camping_Diss/FeatureServer/0", 
 style: function () { 
-    return { color: "#70ca49", weight: 5 }; }
-}).addTo(map);*/
+    return { color: "#cc4c02", weight: 3 }; }
+})
               
 var myMarkers = L.markerClusterGroup();
           
@@ -196,7 +194,8 @@ style: function () {
        		//This is where I show what layers I can turn on or off
 		var overlayMaps = {
             "National Parks": myMarkers,
-            "National Forests": nationalForests
+            "National Forests": nationalForests,
+            "Iowa State Parks and Recreation Areas": iowaStateParks
 		};
   
  // This is where the layers are added to the map in the overlay
