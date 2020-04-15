@@ -178,23 +178,23 @@ var nationalForests = L.esri.featureLayer({
  }); 
           
     function getColor(d) {
-    return d ===  '10'  ? '#08589e' :
-           d ===  '09'  ? '#2b8cbe' :
-           d ===  '08'  ? '#4eb3d3' :
-           d ===  '07'  ? '#7bccc4' :
-           d ===  '06'  ? '#a8ddb5' :
-           d ===  '05'  ? '#ccebc5' :
-           d ===  '04'  ? '#e0f3db' :
-           d ===  '03'  ? '#e0f3db' :
-           d ===  '02'  ? '#e0f3db' :
-           d ===  '01'  ? '#e0f3db' :
+    return d ===  '10'  ? '#9e0142' :
+           d ===  '09'  ? '#d53e4f' :
+           d ===  '08'  ? '#f46d43' :
+           d ===  '07'  ? '#fdae61' :
+           d ===  '06'  ? '#fee08b' :
+           d ===  '05'  ? '#e6f598' :
+           d ===  '04'  ? '#abdda4' :
+           d ===  '03'  ? '#66c2a5' :
+           d ===  '02'  ? '#3288bd' :
+           d ===  '01'  ? '#5e4fa2' :
                     '#e0f3dC';
 }
                                           
 function style(feature) {
     return {
         fillColor: getColor(feature.properties.REGION),
-        weight: 1,
+        weight: 0.5,
         opacity: 2.5,
         color: 'white',
         dashArray: '1',
@@ -236,16 +236,8 @@ function onEachFeature(feature, layer) {
         click: zoomToFeature
     });
 } 
-/*style: function () { 
-    return { color: "#006d2c", weight: 1 }; }*/
 
-
-          // This is how I am adding the map and which layers are added on boot
-          
-/*var map = L.map('map').setView([48.000, -101.7208], 3);
-        map.zoomControl.setPosition('topright');*/
-
-          
+          // This is how I am adding the map and which layers are added on boot   
 var map = L.map('map', {
     center: new L.LatLng(48.0008, -101.7208),
     zoom: 3,
@@ -322,7 +314,7 @@ for (var i = 0; i < categories.length; i++) {
 
         }
         myDiv.innerHTML = labels.join('<br>');
-    return div;
+    return myDiv;
     };
     myLegend.addTo(map);         
         
