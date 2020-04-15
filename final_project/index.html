@@ -289,13 +289,13 @@ info.update = function (props) {
 info.addTo(map);
           // this is where I tell my legends to turn on or off depending on if the layer is open or not 
 map.on('overlayadd', function(eventLayer){
-    if (eventLayer.name === 'ISU Research Farms'){
+    if (eventLayer.name === 'National Forests'){
         map.addControl(myLegend);
     } 
 });
 
 map.on('overlayremove', function(eventLayer){
-    if (eventLayer.name === 'ISU Research Farms'){
+    if (eventLayer.name === 'National Forests'){
          map.removeControl(myLegend);
     } 
 }); 
@@ -306,7 +306,7 @@ myLegend.onAdd = function (map) {
 
     var myDiv = L.DomUtil.create('myDiv', 'info myLegend'),
         grades = [0, 10000, 25000, 50000, 100000, 300000, 500000, 800000],
-        labels = ['<strong> Farm Area sq feet</strong>'],
+        labels = ['<strong> National Forest Area (Acres)</strong>'],
          from, to;
 
     // loop through our area intervals and generate a label with a colored square for each interval while also adding a legend title
@@ -323,9 +323,7 @@ myLegend.onAdd = function (map) {
      myDiv.innerHTML = labels.join('<br>');   
     return myDiv;
 };          
-          
-
-myLegend.addTo(map);
+        
           
         //This is my function to set me Boyd farm button       
 document.getElementById("BoydBtn").addEventListener("click", boydSaturatedBuffer);
