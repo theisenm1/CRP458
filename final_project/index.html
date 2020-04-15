@@ -7,17 +7,19 @@
       
       <link href="../final_project/finalProjectCSS.css" rel="stylesheet" type="text/css">
 	  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
-      
 
+      <link href="dist/searchbox.min.css" rel="stylesheet">
+    
+      <script src="dist/leaflet.customsearchbox.min.js"></script>  
       
-    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+      <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 
       <link rel="stylesheet" href="https://theisenm1.github.io/CRP458/final_project/cluster_files_dist/MarkerCluster.css" />
       <link rel="stylesheet" href="https://theisenm1.github.io/CRP458/final_project/cluster_files_dist/MarkerCluster.Default.css" />
       <script src="https://theisenm1.github.io/CRP458/final_project/cluster_files_dist/leaflet.markercluster-src.js"></script>
       
-    <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
-          
+      <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
+      
        <script src="../geojson/National_Parks.geojson"></script>  
            
       
@@ -75,16 +77,9 @@ var Stamen_TonerHybrid = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/
 var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 	maxZoom: 17,
 	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-});      
-        // This is how I am adding the map and which layers are added on boot  
-var map = L.map('map', {
-    center: new L.LatLng(48.0008, -101.7208),
-    zoom: 3,
-    layers: [Esri_WorldImagery]
-});
+}); 
           
           
-
 // Overlay layers, this is where i will define my points and farms layers. I will also incorporate any functions for choropleth mapping, heat or cluster markers. 
 
           // farms JS         
@@ -167,8 +162,8 @@ style: function () {
 var myMarkers = L.markerClusterGroup();
           
     var nationalParkPoints = L.geoJSON(nationalParks, {
-               onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.PARKNAME + '</b><br />' + feature.properties.STATE);
+               onEachFeature: function (feature, marker) {
+                marker.bindPopup(feature.properties.UNIT_NAME+ '</b><br />' + feature.properties.STATE);
     }                  
 });
           
@@ -180,7 +175,69 @@ var nationalForests = L.esri.featureLayer({
     "https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/US_Forest_Service_Administrative_Forest_Boundaries/FeatureServer/0", 
 style: function () { 
     return { color: "#006d2c", weight: 1 }; }
-})
+});
+
+          // This is how I am adding the map and which layers are added on boot
+var map = L.map('map', {
+    center: new L.LatLng(48.0008, -101.7208),
+    zoom: 3,
+    layers: [Esri_WorldImagery, myMarkers]
+});
+
+    var searchboxControl=createSearchboxControl();
+        var control = new searchboxControl({
+            sidebarTitleText: 'Header',
+            sidebarMenuItems: {
+                Items: [
+                    { type: "link", name: "Link 1 (github.com)", href: "http://github.com", icon: "icon-local-carwash" },
+                    { type: "link", name: "Link 2 (google.com)", href: "http://google.com", icon: "icon-cloudy" },
+                    { type: "button", name: "Button 1", onclick: "alert('button 1 clicked !')", icon: "icon-potrait" },
+                    { type: "button", name: "Button 2", onclick: "button2_click();", icon: "icon-local-dining" },
+                    { type: "link", name: "Link 3 (stackoverflow.com)", href: 'http://stackoverflow.com', icon: "icon-bike" },
+                ]
+            }
+        });
+        control._searchfunctionCallBack = function (searchkeywords)
+        {
+            if (!searchkeywords) {
+                searchkeywords = "The search call back is clicked !!"
+            }
+            alert(searchkeywords);
+        }
+        map.addControl(control);
+    
+    function button2_click()
+    {
+        alert('button 2 clicked !!!');
+    }
+
+    /* var searchboxControl=createSearchboxControl();
+        var control = new searchboxControl({
+            sidebarTitleText: 'Header',
+            sidebarMenuItems: {
+                Items: [
+                    { type: "link", name: "Link 1 (github.com)", href: "http://github.com", icon: "icon-local-carwash" },
+                    { type: "link", name: "Link 2 (google.com)", href: "http://google.com", icon: "icon-cloudy" },
+                    { type: "button", name: "Button 1", onclick: "alert('button 1 clicked !')", icon: "icon-potrait" },
+                    { type: "button", name: "Button 2", onclick: "button2_click();", icon: "icon-local-dining" },
+                    { type: "link", name: "Link 3 (stackoverflow.com)", href: 'http://stackoverflow.com', icon: "icon-bike" },
+                ]
+            }
+        });
+        control._searchfunctionCallBack = function (searchkeywords)
+        {
+            if (!searchkeywords) {
+                searchkeywords = "The search call back is clicked !!"
+            }
+            alert(searchkeywords);
+        }
+        map.addControl(control);
+
+    
+    function button2_click()
+    {
+        alert('button 2 clicked !!!');
+    }*/
 
           //create the map, this is where I lay out the overlay and what is added to the map. 
     
@@ -199,7 +256,15 @@ style: function () {
 		};
   
  // This is where the layers are added to the map in the overlay
-          L.control.layers(baseMaps, overlayMaps).addTo(map);        
+          L.control.layers(baseMaps, overlayMaps).addTo(map);          
+          
+
+    
+    /*L.control.tagFilterButton({
+        data: ['Glacier National Park', '', ''],
+        icon: '<img src="FilterButton/filter.png">',
+        filterOnEveryClick: true
+    }).addTo( map ); */     
           
 // US Population Density Layer
           
