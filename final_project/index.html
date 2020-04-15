@@ -178,23 +178,23 @@ var nationalForests = L.esri.featureLayer({
  }); 
           
     function getColor(d) {
-    return d =  10  ? '#08589e' :
-           d =  09  ? '#2b8cbe' :
-           d =  08  ? '#4eb3d3' :
-           d =  07  ? '#7bccc4' :
-           d =  06  ? '#a8ddb5' :
-           d =  05  ? '#ccebc5' :
-           d =  04  ? '#e0f3db' :
-           d =  03  ? '#e0f3db' :
-           d =  02  ? '#e0f3db' :
-           d =  01  ? '#e0f3db' :
+    return d ===  '10'  ? '#08589e' :
+           d ===  '09'  ? '#2b8cbe' :
+           d ===  '08'  ? '#4eb3d3' :
+           d ===  '07'  ? '#7bccc4' :
+           d ===  '06'  ? '#a8ddb5' :
+           d ===  '05'  ? '#ccebc5' :
+           d ===  '04'  ? '#e0f3db' :
+           d ===  '03'  ? '#e0f3db' :
+           d ===  '02'  ? '#e0f3db' :
+           d ===  '01'  ? '#e0f3db' :
                     '#e0f3dC';
 }
                                           
 function style(feature) {
     return {
         fillColor: getColor(feature.properties.REGION),
-        weight: 2,
+        weight: 1,
         opacity: 2.5,
         color: 'white',
         dashArray: '1',
@@ -308,25 +308,23 @@ var myLegend = L.control({position: 'bottomright'});
 myLegend.onAdd = function (map) {
 
     var myDiv = L.DomUtil.create('myDiv', 'info myLegend'),
-        grades = [0, 10000, 25000, 50000, 100000, 300000, 500000, 800000],
-        Labels = [1,2,3,4,5,6,7,8,9,10],
-        title = "<strong> National Forest Regions</strong>",
-         from, to;
+        Labels = ['<strong>National Forest Regions</strong>'],
+        categories = [];
 
     // loop through our area intervals and generate a label with a colored square for each interval while also adding a legend title
   
-        for (var i = 0; i < grades.length; i++) {
-        from = grades [i];
-        to = grades[i+1]-1;
+for (var i = 0; i < categories.length; i++) {
 
-    labels.push(
-        '<i style="background:' + getColor(from + 1) + '"></i> ' +
-        from + (to ? '&ndash;' + to : '+'));
-        } 
-    
-     myDiv.innerHTML = labels.join('<br>');   
-    return myDiv;
-};          
+            myDiv.innerHTML += 
+            labels.push(
+                '<i class="circle" style="background:' + getColor(categories[i]) + '"></i> ' +
+            (categories[i] ? categories[i] : '+'));
+
+        }
+        myDiv.innerHTML = labels.join('<br>');
+    return div;
+    };
+    myLegend.addTo(map);         
         
           
         //This is my function to set me Boyd farm button       
