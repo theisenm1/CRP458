@@ -300,8 +300,8 @@ var myLegend = L.control({position: 'bottomright'});
 myLegend.onAdd = function (map) {
 
     var myDiv = L.DomUtil.create('myDiv', 'info myLegend'),
-        Labels = ['<strong>National Forest Regions</strong>'],
-        categories = ['North','South','West','East'];
+        labels = ['<strong>National Forest Regions</strong>'],
+        categories = ['01','02','03','04','05','06','07','08','09','10'];
 
     // loop through our area intervals and generate a label with a colored square for each interval while also adding a legend title
   
