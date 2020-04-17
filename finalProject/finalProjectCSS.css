@@ -23,6 +23,19 @@
   z-index: 999;    
 }
 
+#locationsDiv {
+  position: absolute;
+  bottom: 25px;
+  left: 20px;
+  padding: 5px;
+  background-color:blanchedalmond;    
+  z-index: 1111;
+}
+
+#locationsDiv:hover {
+    background-color: blanchedalmond;
+}
+
 .dropdown .dropbtn {
   font-size: 16px;  
   border: none;
@@ -32,7 +45,17 @@
   background-color: inherit;
   font-family: inherit;
   margin: 0;
- 
+}
+
+#dropbtn1 {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
 }
 
 .navbar a:hover, .dropdown:hover .dropbtn {
@@ -243,3 +266,5 @@
     text-align: center;
     font-size: 1em;
 }
+
+

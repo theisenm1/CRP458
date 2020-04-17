@@ -37,7 +37,7 @@
   <body>
     
     <div class="navbar">
-            <a href="https://theisenm1.github.io/CRP458/">Home</a>
+           <a href="https://theisenm1.github.io/CRP458/">Home</a>
             <a href="https://theisenm1.github.io/CRP458/finalProject/ProjectAbstract/" target="blank">Project Abstract</a>
             <div class="dropdown">
   
@@ -47,16 +47,27 @@
       
          <h1 id="h1"><strong>Final Project</strong></h1>
       
-<div id="map"></div> <br>
-      
-      <div class="btn-group">
-        <button id="BoydBtn">Boyd Farm Saturated Buffer</button>
-        <button id="BurkeyBtn">Burkey Farm Saturated Buffer</button>
-        <button id="DairyBtn">Dairy farm Saturated Buffer</button>
-        <button id="UtheBtn">Uthe Farm Saturated Buffer</button>
+<div id="map">
+ <div id="locationsDiv">
+      <button onclick="buttonFunction()" class="dropbtn">Locations</button>
+    <div id="btn-group" class="dropdown-content">
+        <button id="BoydBtn">Location 1</button>
+        <button id="BurkeyBtn">Location 2</button>
+        <button id="DairyBtn">Location 3</button>
+        <button id="UtheBtn">Location 4</button>
       </div>
+        </div>
+         </div>
+      
+      <!--<div id="btn-group" class="dropdown-content">
+        <button id="BoydBtn">Location 1</button>
+        <button id="BurkeyBtn">Location 2</button>
+        <button id="DairyBtn">Location 3</button>
+        <button id="UtheBtn">Location 4</button>
+      </div>-->
       
       <script>
+        
              
 //Base Layers, this is where I added in baselayers that I want to use as imagery
 
@@ -243,6 +254,16 @@ var map = L.map('map', {
     zoom: 3,
     layers: [Esri_WorldImagery, myMarkers]
 });
+          
+/*var legend = L.control({position: 'bottomleft'});
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML = '<select><option>Locations</option><option>Yellowstone National Park</option><option>Yosemite National Park</option><option>Bridger-Teton National Forest</option></select>';
+    div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
+    return div;
+};
+legend.addTo(map);*/          
+                              
                 
           //create the map, this is where I lay out the overlay and what is added to the map. 
     
@@ -316,8 +337,25 @@ for (var i = 0; i < categories.length; i++) {
         myDiv.innerHTML = labels.join('<br>');
     return myDiv;
     };
-         
-        
+
+          
+ function buttonFunction() {
+  document.getElementById("btn-group").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}       
           
         //This is my function to set me Boyd farm button       
 document.getElementById("BoydBtn").addEventListener("click", boydSaturatedBuffer);
