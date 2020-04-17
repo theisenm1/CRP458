@@ -301,8 +301,8 @@ myLegend.onAdd = function (map) {
 
     var myDiv = L.DomUtil.create('myDiv', 'info myLegend'),
         labels = ['<strong>National Forest Regions</strong>'],
-        categories = ['01','02','03','04','05','06','07','08','09','10'];
-
+        categories = ['01','02','03','04','05','06','08','09','10'],
+        categories_label = ['Northern','Rocky Mountains','Southwestern','Intermountains','Pacific Southwest',' Pacific Northwest','Southern','Eastern','Alaska']
     // loop through our area intervals and generate a label with a colored square for each interval while also adding a legend title
   
 for (var i = 0; i < categories.length; i++) {
@@ -310,7 +310,7 @@ for (var i = 0; i < categories.length; i++) {
             myDiv.innerHTML += 
             labels.push(
                 '<i class="circle" style="background:' + getColor(categories[i]) + '"></i> ' +
-            (categories[i] ? categories[i] : '+'));
+            (categories[i] ? categories_label[i] : '+'));
 
         }
         myDiv.innerHTML = labels.join('<br>');
