@@ -46,26 +46,19 @@
     </div> 
       
          <h1 id="h1"><strong>Final Project</strong></h1>
+ <div>     
+<label for="cars">Choose a location:</label>
+<select id="locations" onchange="change_map()">
+  <option value="1">Yellowstone National Park</option>
+  <option value="2">Yosemite National Park</option>
+  <option value="3">Bridger-Teton National Forest</option>
+  <option value="4">Grand Teton National Park</option>
+  <option value="5">Superior National Forest</option>    
+</select>      
+   </div><br>
       
-<div id="map">
- <div id="locationsDiv">
-      <button onclick="buttonFunction()" class="dropbtn">Locations</button>
-    <div id="btn-group" class="dropdown-content">
-        <button id="BoydBtn">Location 1</button>
-        <button id="BurkeyBtn">Location 2</button>
-        <button id="DairyBtn">Location 3</button>
-        <button id="UtheBtn">Location 4</button>
-      </div>
-        </div>
-         </div>
-      
-      <!--<div id="btn-group" class="dropdown-content">
-        <button id="BoydBtn">Location 1</button>
-        <button id="BurkeyBtn">Location 2</button>
-        <button id="DairyBtn">Location 3</button>
-        <button id="UtheBtn">Location 4</button>
-      </div>-->
-      
+<div id="map"></div>
+          
       <script>
         
              
@@ -254,17 +247,7 @@ var map = L.map('map', {
     zoom: 3,
     layers: [Esri_WorldImagery, myMarkers]
 });
-          
-/*var legend = L.control({position: 'bottomleft'});
-legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend');
-    div.innerHTML = '<select><option>Locations</option><option>Yellowstone National Park</option><option>Yosemite National Park</option><option>Bridger-Teton National Forest</option></select>';
-    div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
-    return div;
-};
-legend.addTo(map);*/          
-                              
-                
+         
           //create the map, this is where I lay out the overlay and what is added to the map. 
     
 		//layer control
@@ -338,27 +321,25 @@ for (var i = 0; i < categories.length; i++) {
     return myDiv;
     };
 
-          
- function buttonFunction() {
-  document.getElementById("btn-group").classList.toggle("show");
-}
+// onchange function (this format makes the function global)
+window.change_map = function(){
+    // Get the select element
+    var e = document.getElementById("locations");
+    // Get the value of the selected index
+    var v = e.value;
 
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}       
+    // Verify the value and set the map to the new center
+    if( v == "1" ){ map.setView([44.4280, -110.5885], 9); }
+    else if( v == "2" ) { map.setView([37.8651, -119.5383], 9); }
+    else if( v == "3" ) { map.setView([43.9260, -110.2427], 9); }
+    else if( v == "4" ) { map.setView([43.7904, -110.6818], 9); }
+    else if( v == "5" ) { map.setView([47.7502, -91.5004], 9); }
+    
+}          
+      
           
         //This is my function to set me Boyd farm button       
-document.getElementById("BoydBtn").addEventListener("click", boydSaturatedBuffer);
+/*document.getElementById("BoydBtn").addEventListener("click", boydSaturatedBuffer);
 
         
     function boydSaturatedBuffer() {
@@ -387,7 +368,7 @@ document.getElementById("UtheBtn").addEventListener("click", utheSaturatedBuffer
         
     function utheSaturatedBuffer() {
             map.setView(new L.LatLng(41.9316, -93.7590), 18);
-        }
+        }*/
 
       </script>
 
