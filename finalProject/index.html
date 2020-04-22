@@ -20,6 +20,7 @@
       
        <script src="geojsonFiles/National_Parks.geojson"></script>
        <script src="geojsonFiles/iowaBorder.geojson"></script>
+       <script src="geojsonFiles/usStates"></script>
             
       
       
@@ -82,10 +83,12 @@ var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
 	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 }); 
           
-         
+var usStates = L.geoJSON(states, {
+    style: function () { return { color: "#ef3b2c", weight: 2 }; }
+});         
           
 var iowaBorderLocation = L.geoJSON(iowaBorder, {
-    style: function () { return { color: "#cc4c02", weight: 3 }; }
+    style: function () { return { color: "#f7fcb9", weight: 3 }; }
     
 })
 
@@ -200,7 +203,8 @@ var map = L.map('map', {
             "National Parks": myMarkers,
             "National Forests": nationalForests,
             "Iowa State Parks and Recreation Areas": iowaStateParks,
-            "Iowa Boundary": iowaBorderLocation
+            "Iowa Boundary": iowaBorderLocation,
+            "US States": usStates
 		};
   
  // This is where the layers are added to the map in the overlay
