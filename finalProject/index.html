@@ -60,6 +60,12 @@
    </div><br>
       
 <div id="map"></div>
+      
+     <div class="btn-group">
+        <button id="AlaskaBtn">Alaska</button>
+        <button id="CaribbeanBtn">Caribbean</button>
+        <button id="HawaiiBtn">Hawaii</button>
+      </div>
           
       <script>
         
@@ -282,41 +288,35 @@ window.change_map = function(){
       
           
         //This is my function to set me Boyd farm button       
-/*document.getElementById("BoydBtn").addEventListener("click", boydSaturatedBuffer);
+document.getElementById("AlaskaBtn").addEventListener("click", AlaskaButton);
 
         
-    function boydSaturatedBuffer() {
-            map.setView(new L.LatLng(42.0066, -93.7890), 18);
+    function AlaskaButton() {
+            map.setView(new L.LatLng(64.5026, -153.2290), 4);
         }
           
           //This is my function to set me Burkey farm button       
-document.getElementById("BurkeyBtn").addEventListener("click", burkeySaturatedBuffer);
+document.getElementById("CaribbeanBtn").addEventListener("click", CaribbeanButton);
 
         
-    function burkeySaturatedBuffer() {
-            map.setView(new L.LatLng(42.0106, -93.7926), 18);
+    function CaribbeanButton() {
+            map.setView(new L.LatLng(20.7864, -73.0535), 6);
         }
           
            //This is my function to set me Dairy farm button
-document.getElementById("DairyBtn").addEventListener("click", dairySaturatedBuffer);
+document.getElementById("HawaiiBtn").addEventListener("click", HawaiiButton);
 
        
-    function dairySaturatedBuffer() {
-            map.setView(new L.LatLng(41.9671, -93.6647), 18);
+    function HawaiiButton() {
+            map.setView(new L.LatLng(20.5402, -156.5500), 7);
         }
-          
-          //This is my function to set me Uthe farm button       
-document.getElementById("UtheBtn").addEventListener("click", utheSaturatedBuffer);
+                
 
-        
-    function utheSaturatedBuffer() {
-            map.setView(new L.LatLng(41.9316, -93.7590), 18);
-        }*/
 
       </script>
 
  <footer id="feet">
-         Matt Theisen April 17th, 2020 <br>
+         Matt Theisen April 24th, 2020 <br>
      Sources: Baselayers, <a id="SecondLink"; href="https://leaflet-extras.github.io/leaflet-providers/preview/" title="Leaflet-Providers" color="green" target="blank">Leaflet-Providers</a>  Natural Areas and ISU Research Farms, hand digitized and exported from personal Geodatabase <br>
     <a id="SecondLink"; href="https://github.com/theisenm1/CRP458" title="My Github" color="green" target="blank">GitHub</a> 
         </footer>     
