@@ -73,75 +73,85 @@
 //Base Layers, this is where I added in baselayers that I want to use as imagery
 
 var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+
+var Stamen_TonerHybrid = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-hybrid/{z}/{x}/{y}{r}.{ext}', {
+    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    subdomains: 'abcd',
+    minZoom: 0,
+    maxZoom: 20,
+    ext: 'png'
+});
+
+var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17,
+    attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 });
           
-var Stamen_TonerHybrid = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-hybrid/{z}/{x}/{y}{r}.{ext}', {
-	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-	subdomains: 'abcd',
-	minZoom: 0,
-	maxZoom: 20,
-	ext: 'png'
-}); 
-          
-var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-	maxZoom: 17,
-	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-}); 
-          
+          //Here are my variables laid out. They will be the ones to be shown in the overlay
+
 var usStates = L.geoJSON(states, {
-    style: function () { return { color: "#ef3b2c", weight: 2 }; }
-});         
-          
+    style: function() {
+        return {
+            color: "#ef3b2c",
+            weight: 2
+        };
+    }
+});
+
 var iowaBorderLocation = L.geoJSON(iowaBorder, {
-    style: function () { return { color: "#f7fcb9", weight: 3 }; }
-    
+    style: function() {
+        return {
+            color: "#f7fcb9",
+            weight: 3
+        };
+    }
+
 })
 
-var iowaStateParks = L.esri.featureLayer({ 
-    url: 
-    "https://services2.arcgis.com/r6iFVcMJeA4kB4GC/ArcGIS/rest/services/Parks_RecAreas_Forests_Camping_Diss/FeatureServer/0",
-    onEachFeature: function (feature, marker) {
-                marker.bindPopup(feature.properties.NAME)
+var iowaStateParks = L.esri.featureLayer({
+    url: "https://services2.arcgis.com/r6iFVcMJeA4kB4GC/ArcGIS/rest/services/Parks_RecAreas_Forests_Camping_Diss/FeatureServer/0",
+    onEachFeature: function(feature, marker) {
+        marker.bindPopup(feature.properties.NAME)
     }
 });
 
 
-              
+
 var myMarkers = L.markerClusterGroup();
-          
-    var nationalParkPoints = L.geoJSON(nationalParks, {
-               onEachFeature: function (feature, marker) {
-                marker.bindPopup(feature.properties.UNIT_NAME+ '</b><br />' + feature.properties.STATE);
-    }                  
+
+var nationalParkPoints = L.geoJSON(nationalParks, {
+    onEachFeature: function(feature, marker) {
+        marker.bindPopup(feature.properties.UNIT_NAME + '</b><br />' + feature.properties.STATE);
+    }
 });
-          
- myMarkers.addLayer(nationalParkPoints);
-          
- // esri.leaflet plugin          
-var nationalForests = L.esri.featureLayer({ 
-    url: 
-    "https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/US_Forest_Service_Administrative_Forest_Boundaries/FeatureServer/0",
-    
+
+myMarkers.addLayer(nationalParkPoints);
+
+// esri.leaflet plugin          
+var nationalForests = L.esri.featureLayer({
+    url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/US_Forest_Service_Administrative_Forest_Boundaries/FeatureServer/0",
+
     style: style,
     onEachFeature: onEachFeature
-    
- }); 
-          
-    function getColor(d) {
-    return d ===  '10'  ? '#9e0142' :
-           d ===  '09'  ? '#d53e4f' :
-           d ===  '08'  ? '#f46d43' :
-           d ===  '07'  ? '#fdae61' :
-           d ===  '06'  ? '#fee08b' :
-           d ===  '05'  ? '#e6f598' :
-           d ===  '04'  ? '#abdda4' :
-           d ===  '03'  ? '#66c2a5' :
-           d ===  '02'  ? '#3288bd' :
-           d ===  '01'  ? '#5e4fa2' :
-                    '#e0f3dC';
+
+});
+                // color function for my forests layer
+function getColor(d) {
+    return d === '10' ? '#9e0142' :
+        d === '09' ? '#d53e4f' :
+        d === '08' ? '#f46d43' :
+        d === '07' ? '#fdae61' :
+        d === '06' ? '#fee08b' :
+        d === '05' ? '#e6f598' :
+        d === '04' ? '#abdda4' :
+        d === '03' ? '#66c2a5' :
+        d === '02' ? '#3288bd' :
+        d === '01' ? '#5e4fa2' :
+        '#e0f3dC';
 }
-                                          
+
 function style(feature) {
     return {
         fillColor: getColor(feature.properties.REGION),
@@ -152,7 +162,7 @@ function style(feature) {
         fillOpacity: 0.75
     };
 }
-          
+
 function highlightFeature(e) {
     var layer = e.target;
 
@@ -162,154 +172,162 @@ function highlightFeature(e) {
         dashArray: '',
         fillOpacity: 0.7
     });
-    
+
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }
-  info.update(layer.feature.properties);  
-}  
-     
-    
-    // this function reset the polygons when the cursor is no longer hovering
+    info.update(layer.feature.properties);
+}
+
+
+// this function reset the polygons when the cursor is no longer hovering
 function resetHighlight(e) {
-   nationalForests.resetStyle(e.target);
-   info.update();
-} 
-          // if you click on a feature, it zooms to it 
+    nationalForests.resetStyle(e.target);
+    info.update();
+}
+// if you click on a feature, it zooms to it 
 function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
 }
-          // This function wraps together the highlight, reset, and zoom functions for each feature on the map.
+// This function wraps together the highlight, reset, and zoom functions for each feature on the map.
 function onEachFeature(feature, layer) {
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
         click: zoomToFeature
     });
-} 
+}
 
-          // This is how I am adding the map and which layers are added on boot   
+// This is how I am adding the map and which layers are added on boot   
 var map = L.map('map', {
     center: new L.LatLng(48.0008, -101.7208),
     zoom: 3,
     layers: [Esri_WorldImagery, myMarkers]
 });
-         
-          //create the map, this is where I lay out the overlay and what is added to the map. 
-    
-		//layer control
-		var baseMaps = {
-            "Esri World Imagery": Esri_WorldImagery,
-             "OpenTopoMap": OpenTopoMap,
-            "Stamen Toner Hybrid": Stamen_TonerHybrid
-           
-		};
-       		//This is where I show what layers I can turn on or off
-		var overlayMaps = {
-            "National Parks": myMarkers,
-            "National Forests": nationalForests,
-            "Iowa State Parks and Recreation Areas": iowaStateParks,
-            "Iowa Boundary": iowaBorderLocation,
-            "US States": usStates
-		};
-  
- // This is where the layers are added to the map in the overlay
-          L.control.layers(baseMaps, overlayMaps).addTo(map);          
-           
-          
-// US Population Density Layer
-          
+
+//create the map, this is where I lay out the overlay and what is added to the map. 
+
+//layer control
+var baseMaps = {
+    "Esri World Imagery": Esri_WorldImagery,
+    "OpenTopoMap": OpenTopoMap,
+    "Stamen Toner Hybrid": Stamen_TonerHybrid
+
+};
+//This is where I show what layers I can turn on or off
+var overlayMaps = {
+    "National Parks": myMarkers,
+    "National Forests": nationalForests,
+    "Iowa State Parks and Recreation Areas": iowaStateParks,
+    "Iowa Boundary": iowaBorderLocation,
+    "US States": usStates
+};
+
+// This is where the layers are added to the map in the overlay
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+
+        // This is more of the background JS. Here are the functions for the hover pane, legend, buttons, drop down list, etc. 
 var info = L.control();
-          
-info.onAdd = function (map) {
+
+info.onAdd = function(map) {
     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
     this.update();
     return this._div;
 };
 
 // method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>National Forests</h4>' +  (props ?
-        '<b>' + props.FORESTNAME + '</b><br />' + props.GIS_ACRES + ' acres' + '</b><br />'
-        : 'Hover over a Forest');
+info.update = function(props) {
+    this._div.innerHTML = '<h4>National Forests</h4>' + (props ?
+        '<b>' + props.FORESTNAME + '</b><br />' + props.GIS_ACRES + ' acres' + '</b><br />' :
+        'Hover over a Forest');
 };
 
 info.addTo(map);
-          // this is where I tell my legends to turn on or off depending on if the layer is open or not 
-map.on('overlayadd', function(eventLayer){
-    if (eventLayer.name === 'National Forests'){
+// this is where I tell my legends to turn on or off depending on if the layer is open or not 
+map.on('overlayadd', function(eventLayer) {
+    if (eventLayer.name === 'National Forests') {
         map.addControl(myLegend);
-    } 
+    }
 });
 
-map.on('overlayremove', function(eventLayer){
-    if (eventLayer.name === 'National Forests'){
-         map.removeControl(myLegend);
-    } 
-}); 
-          // This is my legend for the ISU Research Farms layer
-var myLegend = L.control({position: 'bottomright'});
+map.on('overlayremove', function(eventLayer) {
+    if (eventLayer.name === 'National Forests') {
+        map.removeControl(myLegend);
+    }
+});
+// This is my legend for the ISU Research Farms layer
+var myLegend = L.control({
+    position: 'bottomright'
+});
 
-myLegend.onAdd = function (map) {
+myLegend.onAdd = function(map) {
 
     var myDiv = L.DomUtil.create('myDiv', 'info myLegend'),
         labels = ['<strong>National Forest Regions</strong>'],
-        categories = ['01','02','03','04','05','06','08','09','10'],
-        categories_label = ['Northern','Rocky Mountains','Southwestern','Intermountains','Pacific Southwest',' Pacific Northwest','Southern','Eastern','Alaska']
-    // loop through our area intervals and generate a label with a colored square for each interval while also adding a legend title
-  
-for (var i = 0; i < categories.length; i++) {
+        categories = ['01', '02', '03', '04', '05', '06', '08', '09', '10'],
+        categories_label = ['Northern', 'Rocky Mountains', 'Southwestern', 'Intermountains', 'Pacific Southwest', ' Pacific Northwest', 'Southern', 'Eastern', 'Alaska']
+        // loop through our area intervals and generate a label with a colored square for each interval while also adding a legend title
 
-            myDiv.innerHTML += 
+    for (var i = 0; i < categories.length; i++) {
+
+        myDiv.innerHTML +=
             labels.push(
                 '<i class="circle" style="background:' + getColor(categories[i]) + '"></i> ' +
-            (categories[i] ? categories_label[i] : '+'));
+                (categories[i] ? categories_label[i] : '+'));
 
-        }
-        myDiv.innerHTML = labels.join('<br>');
+    }
+    myDiv.innerHTML = labels.join('<br>');
     return myDiv;
-    };
+};
 
 // onchange function (this format makes the function global)
-window.change_map = function(){
+window.change_map = function() {
     // Get the select element
     var e = document.getElementById("locations");
     // Get the value of the selected index
     var v = e.value;
 
     //Thi is my function to link the list of locations to their actual locations   
-    if( v == "1" ){ map.setView([44.4280, -110.5885], 9); }
-    else if( v == "2" ) { map.setView([37.8651, -119.5383], 9); }
-    else if( v == "3" ) { map.setView([43.9260, -110.2427], 9); }
-    else if( v == "4" ) { map.setView([43.7904, -110.6818], 9); }
-    else if( v == "5" ) { map.setView([47.7502, -91.5004], 9); }
-    
-}          
-      
-          
-        //This is my function to set me Boyd farm button       
+    if (v == "1") {
+        map.setView([44.4280, -110.5885], 9);
+    } else if (v == "2") {
+        map.setView([37.8651, -119.5383], 9);
+    } else if (v == "3") {
+        map.setView([43.9260, -110.2427], 9);
+    } else if (v == "4") {
+        map.setView([43.7904, -110.6818], 9);
+    } else if (v == "5") {
+        map.setView([47.7502, -91.5004], 9);
+    }
+
+}
+
+
+//This is my function to set me Boyd farm button       
 document.getElementById("AlaskaBtn").addEventListener("click", AlaskaButton);
 
-        
-    function AlaskaButton() {
-            map.setView(new L.LatLng(64.5026, -153.2290), 4);
-        }
-          
-          //This is my function to set me Burkey farm button       
+
+function AlaskaButton() {
+    map.setView(new L.LatLng(64.5026, -153.2290), 4);
+}
+
+//This is my function to set me Burkey farm button       
 document.getElementById("CaribbeanBtn").addEventListener("click", CaribbeanButton);
 
-        
-    function CaribbeanButton() {
-            map.setView(new L.LatLng(19.7864, -68.0535), 6);
-        }
-          
-           //This is my function to set me Dairy farm button
+
+function CaribbeanButton() {
+    map.setView(new L.LatLng(19.7864, -68.0535), 6);
+}
+
+//This is my function to set me Dairy farm button
 document.getElementById("HawaiiBtn").addEventListener("click", HawaiiButton);
 
-       
-    function HawaiiButton() {
-            map.setView(new L.LatLng(20.5402, -156.5500), 7);
-        }
+
+function HawaiiButton() {
+    map.setView(new L.LatLng(20.5402, -156.5500), 7);
+}
                 
 
 
