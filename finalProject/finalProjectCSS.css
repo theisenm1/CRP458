@@ -191,7 +191,7 @@
     opacity: 0.85;
 } 
           /* This is my CSS for my buttons*/
-#BoydBtn {
+#AlaskaBtn {
   background-color: #005824;
   border: none;
   color: black;
@@ -201,9 +201,10 @@
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+  border-radius: 5px;    
 }
           
-#BurkeyBtn {
+#CaribbeanBtn {
   background-color: #005824;
   border: none;
   color: black;
@@ -213,9 +214,10 @@
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+  border-radius: 5px;
 } 
           
-#DairyBtn {
+#HawaiiBtn {
   background-color: #005824;
   border: none;
   color: black;
@@ -225,19 +227,10 @@
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+  border-radius: 5px;  
 } 
           
-#UtheBtn {
-  background-color: #005824;
-  border: none;
-  color: black;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-} 
+
 #farmManager {
     text-align: center;
     font-size: 1em;
